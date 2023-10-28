@@ -4,7 +4,7 @@ const Stack = createNativeStackNavigator();
 import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 import * as React from "react";
-import HomeScreen from "../screens/HomeScreen";
+import HomeScreen from "../../screens/HomeScreen";
 
 export default function Navigation() {
   return (
