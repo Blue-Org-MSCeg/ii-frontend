@@ -1,10 +1,10 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-export default function AddClient() {
+export default function IRgeneration() {
   return (
     <View>
-      <Text>AddClient</Text>
+      <Text>IRgeneration</Text>
     </View>
   );
 }
