@@ -2,20 +2,19 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import Head from '../components/Head';
 import ClientComponent from '../components/ClientComponent';
 import { useEffect, useState } from 'react';
-const axios = require('axios');
+// import axios from 'axios';
 
 export default function ViewClients() {
-	const clients = ['Google', 'Amazon', 'flipkart', 'Hyundai'];
-	const [client, setClients] = useState([]);
+	// const clients = ['Google', 'Amazon', 'flipkart', 'Hyundai'];
+	const [clients, setClients] = useState([]);
 
 	useEffect(() => {
-		fetch('http://127.0.0.1/3000/api/v1/clients')
-			.then((res) => res.json())
-			.then((data) => {
-				console.log(data);
-			})
-			.catch((error) => console.log(error));
+		fetch('http://192.168.141.152:3000/api/v1/clients/')
+			.then((response) => response.json())
+			.then((res) => setClients(res.data.clients))
+			.catch((err) => console.log(err));
 	}, []);
+
 	return (
 		<View className="w-screen">
 			<Head />
@@ -26,7 +25,7 @@ export default function ViewClients() {
 				<View className="w-11/12">
 					<View className="w-full flex items-center relative">
 						{clients.map((client) => (
-							<ClientComponent key={client} clientName={client} />
+							<ClientComponent key={client._id} clientName={client.businessName} />
 						))}
 					</View>
 					<View className="absolute top-full left-10 mt-4">

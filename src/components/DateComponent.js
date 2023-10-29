@@ -12,7 +12,7 @@ export default DateComponent = (props) => {
 		setDate(propDate);
 	};
 	return (
-		<Modal animationType="slide" transparent={true} visible={props.isCalendarOpen}>
+		<Modal animationType="slide" transparent={false} visible={props.isCalendarOpen}>
 			<DatePicker mode="calendar" minimumDate={startDate} selected={date} onDateChange={handleDateChange} onSelectedChange={(date) => props.setSelectedStartDate(date)}></DatePicker>
 			<View className="flex items-end mr-2">
 				<TouchableOpacity onPress={props.handleOpenCalendar} className="bg-red-500 w-14 p-1 rounded-sm">

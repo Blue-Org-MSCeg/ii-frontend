@@ -6,9 +6,6 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 // const navigation = useNavigation();
 
 const HomeMenu = ({ navigation }) => {
-  //   const directTo = () => {
-  //     navigation.navigate({ to });
-  //   };
   return (
     <TouchableOpacity
       className="bg-gray-300 p-4 m-6 w-32 h-32 justify-items-center items-center justify-end rounded-md"

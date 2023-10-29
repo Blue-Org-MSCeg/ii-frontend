@@ -1,18 +1,17 @@
-import { TouchableOpacity, View, Text } from 'react-native';
-import Head from '../components/Head';
-import HomeMenu from '../components/HomeMenu';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { TouchableOpacity, View, Text } from "react-native";
+import Head from "../components/Head";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export default function HomeScreen({ navigation }) {
-	const menu = [
-		{ label: 'add client', icon: 'user-plus', to: 'AddClient' },
-		{ label: 'add orders', icon: 'user-plus', to: 'AddOrder' },
-		{ label: 'edit orders', icon: 'user-plus', to: 'EditOrder' },
-		{ label: 'view clients', icon: 'user-plus', to: 'ViewClients' },
-		{ label: 'view menu', icon: 'user-plus', to: 'ViewMenu' },
-		{ label: 'Menu quotation', icon: 'user-plus', to: 'MenuQuotation' },
-		{ label: 'Generate Invoice', icon: 'user-plus', to: 'IRgeneartion' },
-	];
+  const menu = [
+    { label: "add client", icon: "user-plus", to: "AddClient" },
+    { label: "add orders", icon: "plus", to: "AddOrders" },
+    { label: "edit orders", icon: "eraser", to: "EditOrder" },
+    { label: "view clients", icon: "eye", to: "ViewClients" },
+    { label: "view menu", icon: "user-plus", to: "ViewMenu" },
+    { label: "Menu quotation", icon: "dropbox", to: "MenuQuotation" },
+    { label: "Generate Invoice", icon: "book", to: "IRgeneration" },
+  ];
 
 	return (
 		<View>
