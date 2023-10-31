@@ -9,7 +9,7 @@ const DropDown = (props) => {
 	const [clientList, setClientList] = useState([]);
 
 	useEffect(() => {
-		fetch('http://10.16.50.30:3000/api/v1/clients/')
+		fetch('http://192.168.137.90:3000/api/v1/clients/')
 			.then((response) => response.json())
 			.then((res) => setClients(res.data.clients))
 			.catch((err) => console.log(err));
@@ -23,8 +23,9 @@ const DropDown = (props) => {
 					label: client.businessName,
 					value: client.businessName,
 					businessName: client.businessName,
-					key: client._id,
+					id: client._id,
 					menuQuotation: client.menuQuotation,
+					// cost: client.cost,
 				},
 			]);
 		});

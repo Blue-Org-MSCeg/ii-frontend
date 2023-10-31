@@ -7,7 +7,7 @@ export default function ViewClients() {
 	const [clients, setClients] = useState([]);
 
 	useEffect(() => {
-		fetch('http://10.16.50.30:3000/api/v1/clients/')
+		fetch('http://192.168.137.90:3000/api/v1/clients/')
 			.then((response) => response.json())
 			.then((res) => setClients(res.data.clients))
 			.catch((err) => console.log(err));
