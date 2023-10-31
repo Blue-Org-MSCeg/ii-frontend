@@ -11,6 +11,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    
+     
+    
+    
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -26,5 +30,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     }
+    
   }
 }
+

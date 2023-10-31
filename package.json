@@ -44,5 +44,6 @@
     "react-native-clean-project": "^4.0.1",
     "tailwindcss": "^3.3.2"
   },
+  
   "private": true
 }
