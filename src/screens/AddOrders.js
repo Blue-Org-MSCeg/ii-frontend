@@ -27,7 +27,7 @@ export default AddOrders = () => {
 		setBusinessName(client.businessName);
 	};
 
-	const [order, setOrder] = useState([]);
+	let [order, setOrder] = useState([]);
 	// handle input change
 	const handleInputChange = (noOfHeads, id) => {
 		const updatedOrder = menuQuotation.map((item) => {
@@ -36,46 +36,51 @@ export default AddOrders = () => {
 			}
 			return item;
 		});
-		console.log(menuQuotation);
-		menuQuotation = updatedOrder;
+		// console.log(updatedOrder);
+		setMenuQuotation(updatedOrder);
+	};
+
+	useEffect(() => {
+		// console.log(menuQuotation);
 		setOrder(menuQuotation);
-	};
+	}, [menuQuotation]);
 
-	// handle submit
-	// const handleSubmit = () => {
-	// order.forEach((ord) => {
-	// 	if (!ord.numberOfHeads) {
-	// 		const index = order.indexOf(ord);
-	// 		order.splice(index, 1);
-	// 	}
-	// });
-
-	// formatedOrder = order.map((ord) => {
-	// 	if (ord.numberOfHeads) {
-	// 		return {
-	// 			foodItem: ord.foodItem,
-	// 			numberOfHeads: ord.numberOfHeads,
-	// 		};
-	// 	} else return;
-	// });
+	const [formattedOrder, setFormattedData] = useState([]);
+	// post data to backend
 	const handleSubmit = () => {
-		useEffect(() => {
-			if (order.length > 0) {
-				const formattedOrder = order
-					.filter((ord) => ord.numberOfHeads) // Remove items without numberOfHeads
-					.map((ord) => ({
-						foodItem: ord.foodItem,
-						numberOfHeads: ord.numberOfHeads,
-					}));
-
-				setFormData({
-					businessName: businessName,
-					orders: formattedOrder,
-				});
-				console.log(formData);
-			}
-		}, [order]);
+		// useEffect(() => {
+		if (order.length > 0) {
+			order = order
+				.filter((ord) => ord.numberOfHeads) // Remove items without numberOfHeads
+				.map((ord) => ({
+					foodItem: ord.foodItem,
+					numberOfHeads: ord.numberOfHeads,
+				}));
+		}
+		// console.log('order = ', order);
+		setFormattedData(order);
 	};
+
+	useEffect(() => {
+		// console.log('formated:', formattedOrder);
+		setFormData({
+			businessName: businessName,
+			orders: formattedOrder,
+		});
+	}, [formattedOrder]);
+
+	useEffect(() => {
+		console.log('formData:', formData);
+		if (formData.orders !== null) {
+			fetch('http://192.168.137.1:3000/api/v1/orders/', {
+				method: 'POST',
+				headers: { 'Content-type': 'application/json' },
+				body: JSON.stringify(formData),
+			})
+				.then((response) => response.json())
+				.then((data) => console.log(data));
+		}
+	}, [formData]);
 
 	return (
 		<View>
