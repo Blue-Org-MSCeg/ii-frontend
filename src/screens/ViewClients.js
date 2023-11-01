@@ -1,43 +1,47 @@
-import { Text, View, TouchableOpacity } from "react-native";
-import Head from "../components/Head";
-import ClientComponent from "../components/ClientComponent";
-import { useEffect, useState } from "react";
-// import axios from 'axios';
+import { Text, View, TouchableOpacity } from 'react-native';
+import Head from '../components/Head';
+import ClientComponent from '../components/ClientComponent';
+import { useEffect, useState } from 'react';
 
 export default function ViewClients() {
-  // const clients = ['Google', 'Amazon', 'flipkart', 'Hyundai'];
-  const [clients, setClients] = useState([]);
+	const [clients, setClients] = useState([]);
 
+<<<<<<< HEAD
   useEffect(() => {
     fetch("http://10.16.65.97:3000/api/v1/clients/")
       .then((response) => response.json())
       .then((res) => setClients(res.data.clients))
       .catch((err) => console.log(err));
   }, []);
+=======
+	useEffect(() => {
+		fetch('http://192.168.137.1:3000/api/v1/clients/')
+			.then((response) => response.json())
+			.then((res) => setClients(res.data.clients))
+			.catch((err) => console.log(err));
+	}, []);
+>>>>>>> 3206d75e14549ae5767fcf3619ac3e5bfa565c9d
 
-  return (
-    <View className="w-screen">
-      <Head />
-      <View className="w-screen flex items-end">
-        <Text className="mt-8 text-lg mr-12">List of Clients</Text>
-      </View>
-      <View className="w-screen flex items-center mt-3">
-        <View className="w-11/12">
-          <View className="w-full flex items-center relative">
-            {clients.map((client) => (
-              <ClientComponent
-                key={client._id}
-                clientName={client.businessName}
-              />
-            ))}
-          </View>
-          <View className="absolute top-full left-10 mt-4">
-            <TouchableOpacity className="bg-blue-500 p-3 rounded-lg">
-              <Text className="text-white">Add Client</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    </View>
-  );
+	return (
+		<View className="w-screen">
+			<Head />
+			<View className="w-screen flex items-end">
+				<Text className="mt-8 text-lg mr-12">List of Clients</Text>
+			</View>
+			<View className="w-screen flex items-center mt-3">
+				<View className="w-11/12">
+					<View className="w-full flex items-center relative">
+						{clients.map((client) => (
+							<ClientComponent keyval={client._id} clientName={client.businessName} />
+						))}
+					</View>
+					<View className="absolute top-full left-10 mt-4">
+						<TouchableOpacity className="bg-blue-500 p-3 rounded-lg">
+							<Text className="text-white">Add Client</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</View>
+		</View>
+	);
 }
