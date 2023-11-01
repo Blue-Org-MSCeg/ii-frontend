@@ -2,6 +2,7 @@ import { View, Text, Button, TouchableOpacity, TextInput } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import EditFoodComponent from '../components/EditFoodComponent';
 import EditerComponent from '../components/EditerComponent';
+import DropDown from '../components/DropDown';
 
 export default function MenuQuotation() {
 	const [menuItem, setMenuItem] = useState([
@@ -10,6 +11,13 @@ export default function MenuQuotation() {
 		{ food: 'Lunch', cost: '100', id: '3' },
 		{ food: 'Dinner', cost: '60', id: '4' },
 	]);
+
+	useEffect(() => {
+		fetch('http://192.168.137.1:3000/api/v1/clients/')
+			.then((response) => response.json())
+			.then((res) => setClients(res.data.clients))
+			.catch((err) => console.log(err));
+	}, []);
 
 	const [cost, setCost] = useState('');
 	const [food, setFood] = useState('');
@@ -51,11 +59,21 @@ export default function MenuQuotation() {
 		}
 	}, [itemEdit]);
 
+	// getting the menu quotation respective to the client
+	let [menuQuotation, setMenuQuotation] = useState([]);
+	const changeOrderList = (client) => {
+		setMenuQuotation(client.menuQuotation);
+		// setBusinessName(client.businessName);
+	};
+
 	return (
 		<View className="w-full">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
 				<Text className="text-center">MenuQuotation</Text>
 			</View>
+
+			{/* list clients */}
+			<DropDown changeOrderList={changeOrderList} />
 
 			{/* add food items for company */}
 			{isAddFoodOpen && (
