@@ -7,7 +7,7 @@ export default DateComponent = (props) => {
 	const today = new Date();
 	const startDate = getFormatedDate(today.setDate(today.getDate() + 1), 'YYYY/MM/DD');
 	const [date, setDate] = useState('12/12/2023');
-
+	
 	const handleDateChange = (propDate) => {
 		setDate(propDate);
 	};
