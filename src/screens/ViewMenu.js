@@ -1,105 +1,125 @@
-import {
-  View,
-  Text,
-  Button,
-  TextInput,
-  ScrollView,
-  TouchableHighlight,
-  TouchableOpacity,
-} from "react-native";
-import React, { useState } from "react";
+import { View, Text, Button, TouchableOpacity, TextInput } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import EditFoodComponent from '../components/EditFoodComponent';
+import EditerComponent from '../components/EditerComponent';
 
 export default function ViewMenu() {
-  const [menu, setMenu] = useState([]);
-  const [cost, setCost] = useState("");
-  const [food, setFood] = useState("");
-  const [isAddFoodOpen, setIsAddFoodOpen] = useState(false);
+	const [menuItem, setMenuItem] = useState([]);
 
-  const changeFood = (food) => {
-    setFood(food);
-  };
+	const [cost, setCost] = useState('');
+	const [food, setFood] = useState('');
+	const [formData, setFormData] = useState({});
+	const [itemEdit, setItemEdit] = useState(null);
+	const [isAddFoodOpen, setIsAddFoodOpen] = useState(false);
+	const [isEditFoodOpen, setIsEditFoodOpen] = useState(false);
 
-  const changeCost = (cost) => {
-    setCost(cost);
-  };
+	useEffect(() => {
+		fetch('http://192.168.137.1:3000/api/v1/menus/')
+			.then((response) => response.json())
+			.then((res) => setMenuItem(res.data.menu))
+			.catch((err) => console.log(err));
+	}, [formData]);
 
-  const addFood = () => {
-    setMenu((currentMenu) => [...currentMenu, { food: food, cost: cost }]);
-    toggleAddFoodHandler();
-  };
+	const editorPass = (item) => {
+		setItemEdit(item);
+	};
 
-  const toggleAddFoodHandler = () => {
-    setIsAddFoodOpen(!isAddFoodOpen);
-  };
+	const changeFood = (food) => {
+		setFood(food);
+	};
 
-  const deleteItem = (index) => {
-    const newOptions = [...menu];
-    newOptions.splice(index, 1);
-    setMenu(newOptions);
-  };
+	const changeCost = (cost) => {
+		setCost(cost);
+	};
 
-  return (
-    <View>
-      <View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
-        <Text className="text-white text-center">VIEW MENU</Text>
-      </View>
+	const toggleAddFoodHandler = () => {
+		setIsAddFoodOpen(!isAddFoodOpen);
+	};
 
-      {/* add menu text box*/}
+	const addFood = () => {
+		// setMenuItem((currentMenu) => [...currentMenu, { food: food, cost: cost }]);
+		setFormData({
+			foodItem: food,
+			cost: cost,
+		});
+	};
 
-      {isAddFoodOpen && (
-        <View className="align-middle justify-center content-centers flex border-b mb-5">
-          <View className="flex-row flex-2 p-15">
-            <TextInput
-              onChangeText={changeFood}
-              className="border-2 border-black w-7/12 p-2 ml-10 "
-              maxLength={40}
-              placeholder="food item"
-            />
-            <TextInput
-              onChangeText={changeCost}
-              className="border-2 border-black  p-2 mr-10 ml-6"
-              placeholder="cost"
-              keyboardType="numeric"
-            />
-          </View>
-          <TouchableOpacity>
-            <View className="flex-row justify-between p-5">
-              <View className="ml-6">
-                <Button title="CANCEL" onPress={toggleAddFoodHandler} />
-              </View>
-              <View className="mr-10">
-                <Button onPress={addFood} title="submit" />
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-      )}
+	// posting the food to the db when submit button is pressed
+	useEffect(() => {
+		fetch('http://192.168.137.1:3000/api/v1/menus/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(formData),
+		})
+			.then((response) => response.json())
+			.then((data) => console.log(data))
+			.catch((err) => console.log(err));
 
-      {/* menu items */}
-      <ScrollView>
-        {menu.map((menuItem, index) => (
-          <View className=" flex-row mb-3 justify-between mx-3" key={index}>
-            <View className="flex-row mb-3 justify-between">
-              <View className="border border-black bg-gray-300 p-2 m-1 mr-2 w-40">
-                <Text>{menuItem.food}</Text>
-              </View>
-              <View className="border border-black  bg-gray-300 text-center p-2 m-1 mr-2 w-20">
-                <Text>{menuItem.cost}</Text>
-              </View>
-            </View>
-            <View className="p-1 m-1">
-              <Button title="Remove" onPress={() => deleteItem(index)} />
-            </View>
-          </View>
-        ))}
+		toggleAddFoodHandler();
+	}, [formData]);
 
-        {/* add button */}
-        <TouchableOpacity>
-          <View className=" justify-between p-2 ml-10 mr-10 ">
-            <Button title="ADD" onPress={toggleAddFoodHandler} />
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
-  );
+	useEffect(() => {
+		console.log(itemEdit);
+		if (itemEdit) {
+			const updatedItem = menuItem.map((item) => (item._id === itemEdit._id ? { _id: itemEdit._id, foodItem: itemEdit.foodItem, cost: itemEdit.cost } : item));
+			setMenuItem(updatedItem);
+			// setIsEditFoodOpen(false);
+		}
+	}, [itemEdit]);
+
+	return (
+		<View className="w-full">
+			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
+				<Text className="text-center">View Menu</Text>
+			</View>
+
+			{/* add food items for company */}
+			{isAddFoodOpen && (
+				<View className="align-middle justify-center content-centers flex border-b mb-5">
+					<View className="flex-row flex-2 p-15">
+						<View className="border-2 bg-gray-300 border-black w-7/12 p-2 ml-10 ">
+							<TextInput onChangeText={changeFood} maxLength={40} placeholder="food item" />
+						</View>
+						<View className="bg-gray-300 border-2 border-black  p-2 mr-10 ml-6 ">
+							<TextInput onChangeText={changeCost} className="" placeholder="cost" keyboardType="numeric" />
+						</View>
+					</View>
+					<TouchableOpacity>
+						<View className="flex-row justify-between p-5">
+							<View className="ml-6">
+								<Button title="CANCEL" onPress={toggleAddFoodHandler} />
+							</View>
+							<View className="mr-10">
+								<Button onPress={addFood} title="submit" />
+							</View>
+						</View>
+					</TouchableOpacity>
+				</View>
+			)}
+
+			{isEditFoodOpen && <EditerComponent itemEdit={itemEdit} setItemEdit={setItemEdit} />}
+
+			{/* View menu */}
+			<View className="place-items-center mx-2">
+				<View className="flex-row">
+					<View>
+						<Text className="border border-black p-2 m-1 w-40 bg-gray-300 font-bold">Items</Text>
+					</View>
+					<View>
+						<Text className="border border-black p-2 m-1 w-20 bg-gray-300 font-bold">Cost</Text>
+					</View>
+				</View>
+				{menuItem.map((item) => (
+					<EditFoodComponent item={item} index={item._id} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={setMenuItem} editorPass={editorPass} />
+				))}
+			</View>
+			<TouchableOpacity>
+				<View className="w-20 justify-between p-1 rounded-md mt-10">
+					<Button title="ADD" onPress={toggleAddFoodHandler} />
+				</View>
+			</TouchableOpacity>
+		</View>
+	);
 }

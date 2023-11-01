@@ -3,13 +3,13 @@ import { Button, Text, TextInput, View } from 'react-native';
 
 export default EditerComponent = ({ itemEdit, setItemEdit }) => {
 	const [editedItemCost, setEditedItemCost] = useState(itemEdit.cost);
-	const [editedItemFood, setEditedItemFood] = useState(itemEdit.food);
+	const [editedItemFood, setEditedItemFood] = useState(itemEdit.foodItem);
 
 	const updateEditedItem = () => {
 		console.log('save button pressed');
-		itemEdit.food = editedItemFood;
+		itemEdit.foodItem = editedItemFood;
 		itemEdit.cost = editedItemCost;
-		itemEdit.id = itemEdit.id;
+		itemEdit._id = itemEdit._id;
 		setItemEdit(itemEdit);
 	};
 
@@ -28,8 +28,8 @@ export default EditerComponent = ({ itemEdit, setItemEdit }) => {
 				<Text className="text-center ">Edit</Text>
 			</View>
 			<View className="flex-row justify-center mb-5">
-				<TextInput className="border-2 border-black w-20 mr-10" value={editedItemFood} onChangeText={setEditedItemFood} placeholder="food" />
-				<TextInput className="border-2 border-black w-20 mr-10" value={editedItemCost} onChangeText={setEditedItemCost} placeholder="Cost" keyboardType="numeric" />
+				<TextInput className="border-2 border-black w-20 mr-10 px-1" value={editedItemFood} onChangeText={setEditedItemFood} placeholder="food" />
+				<TextInput className="border-2 border-black w-20 mr-10 px-1" value={editedItemCost} onChangeText={setEditedItemCost} placeholder="cost" keyboardType="numeric" />
 				<View className="ml-2">
 					<Button title="Save" onPress={updateEditedItem} />
 				</View>

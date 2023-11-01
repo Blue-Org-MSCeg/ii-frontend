@@ -1,10 +1,6 @@
-import { useState } from 'react';
 import { Button, Text, View } from 'react-native';
 
 export default EditFoodComponent = ({ item, index, setIsEditFoodOpen, setMenuItem, editorPass }) => {
-	// const [isEditOpen, setIsEditOpen] = useState(false);
-	// const [editedItemCost, setEditedItemCost] = useState('');
-
 	const handleRemove = (index) => {
 		const newOptions = [...menuItem];
 		newOptions.splice(index, 1);
@@ -13,7 +9,7 @@ export default EditFoodComponent = ({ item, index, setIsEditFoodOpen, setMenuIte
 	return (
 		<View className=" flex-row mb-3 justify-between mr-2" key={index}>
 			<View className="border border-black p-2 m-1 w-40 bg-gray-300">
-				<Text>{item.food}</Text>
+				<Text>{item.foodItem}</Text>
 			</View>
 			<View className="border border-black p-2 m-1 w-20 bg-gray-300">
 				<Text className=" text-center ">{item.cost}</Text>
@@ -23,8 +19,6 @@ export default EditFoodComponent = ({ item, index, setIsEditFoodOpen, setMenuIte
 				<Button
 					title="edit"
 					onPress={() => {
-						// setIsEditOpen(true);
-						// setEditedItemCost(item.cost);
 						setIsEditFoodOpen(true);
 						editorPass(item);
 					}}
