@@ -70,7 +70,7 @@ export default AddOrders = () => {
 	}, [formattedOrder]);
 
 	useEffect(() => {
-		console.log('formData:', formData);
+		console.log(formData);
 		if (formData.orders !== null) {
 			fetch('http://192.168.137.1:3000/api/v1/orders/', {
 				method: 'POST',
@@ -78,7 +78,8 @@ export default AddOrders = () => {
 				body: JSON.stringify(formData),
 			})
 				.then((response) => response.json())
-				.then((data) => console.log(data));
+				.then((data) => console.log(data))
+				.catch((err) => console.log(err));
 		}
 	}, [formData]);
 
