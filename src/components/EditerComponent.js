@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-export default EditerComponent = ({ itemEdit, setItemEdit }) => {
-	const [editedItemCost, setEditedItemCost] = useState(itemEdit.cost);
+export default EditerComponent = ({ itemEdit, itemEditPass }) => {
+	const [editedItemCost, setEditedItemCost] = useState(JSON.stringify(itemEdit.cost));
 	const [editedItemFood, setEditedItemFood] = useState(itemEdit.foodItem);
 
 	const updateEditedItem = () => {
@@ -10,7 +10,7 @@ export default EditerComponent = ({ itemEdit, setItemEdit }) => {
 		itemEdit.foodItem = editedItemFood;
 		itemEdit.cost = editedItemCost;
 		itemEdit._id = itemEdit._id;
-		setItemEdit(itemEdit);
+		itemEditPass(itemEdit);
 	};
 
 	//   const handleEdit = () => {
@@ -30,9 +30,9 @@ export default EditerComponent = ({ itemEdit, setItemEdit }) => {
 			<View className="flex-row justify-center mb-5">
 				<TextInput className="border-2 border-black w-20 mr-10 px-1" value={editedItemFood} onChangeText={setEditedItemFood} placeholder="food" />
 				<TextInput className="border-2 border-black w-20 mr-10 px-1" value={editedItemCost} onChangeText={setEditedItemCost} placeholder="cost" keyboardType="numeric" />
-				<View className="ml-2">
-					<Button title="Save" onPress={updateEditedItem} />
-				</View>
+				<TouchableOpacity className=" text-center px-4 py-1 rounded-sm bg-blue-400" onPress={updateEditedItem}>
+					<Text className="text-white text-center">Save</Text>
+				</TouchableOpacity>
 			</View>
 		</View>
 	);

@@ -5,23 +5,11 @@ import EditerComponent from '../components/EditerComponent';
 import DropDown from '../components/DropDown';
 
 export default function MenuQuotation() {
-	const [menuItem, setMenuItem] = useState([
-		{ food: 'Breakfast', cost: '50', id: '1' },
-		{ food: 'snacks', cost: '30', id: '2' },
-		{ food: 'Lunch', cost: '100', id: '3' },
-		{ food: 'Dinner', cost: '60', id: '4' },
-	]);
-
-	useEffect(() => {
-		fetch('http://192.168.137.1:3000/api/v1/clients/')
-			.then((response) => response.json())
-			.then((res) => setClients(res.data.clients))
-			.catch((err) => console.log(err));
-	}, []);
-
 	const [cost, setCost] = useState('');
 	const [food, setFood] = useState('');
-	const [itemEdit, setItemEdit] = useState(null);
+	const [client, setClient] = useState({});
+	const [formData, setFormData] = useState({});
+	const [itemEdit, setItemEdit] = useState('');
 	const [isAddFoodOpen, setIsAddFoodOpen] = useState(false);
 	const [isEditFoodOpen, setIsEditFoodOpen] = useState(false);
 
@@ -30,6 +18,7 @@ export default function MenuQuotation() {
 	};
 
 	const itemEditPass = (itemEdit) => {
+		// console.log('item edit pass', itemEdit);
 		setItemEdit(itemEdit);
 	};
 
@@ -51,19 +40,39 @@ export default function MenuQuotation() {
 	};
 
 	useEffect(() => {
-		console.log(itemEdit);
-		if (itemEdit) {
-			const updatedItem = menuItem.map((item) => (item.id === itemEdit.id ? { id: itemEdit.id, food: itemEdit.food, cost: itemEdit.cost } : item));
-			setMenuItem(updatedItem);
-			// setIsEditFoodOpen(false);
-		}
+		setFormData({
+			_id: itemEdit._id,
+			foodItem: itemEdit.foodItem,
+			cost: Number(itemEdit.cost),
+		});
+		// itemEdit.cost = Number(itemEdit.cost);
+		console.log('changed', typeof itemEdit.cost);
 	}, [itemEdit]);
+
+	useEffect(() => {
+		console.log('formData changed');
+		fetch(`http://192.168.141.152:3000/api/v1/clients/quotation/${client._id}`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(itemEdit),
+		})
+			.then((response) => response.json())
+			.then((data) => console.log(data))
+			.catch((err) => console.log(err));
+
+		if (itemEdit) {
+			const updatedQuotation = menuQuotation.map((item) => (item._id === itemEdit._id ? { _id: itemEdit._id, foodItem: itemEdit.foodItem, cost: itemEdit.cost } : item));
+			setMenuQuotation(updatedQuotation);
+		}
+	}, [formData]);
 
 	// getting the menu quotation respective to the client
 	let [menuQuotation, setMenuQuotation] = useState([]);
 	const changeOrderList = (client) => {
+		setClient(client);
 		setMenuQuotation(client.menuQuotation);
-		// setBusinessName(client.businessName);
 	};
 
 	return (
@@ -99,7 +108,7 @@ export default function MenuQuotation() {
 				</View>
 			)}
 
-			{isEditFoodOpen && <EditerComponent itemEdit={itemEdit} setItemEdit={setItemEdit} />}
+			{isEditFoodOpen && <EditerComponent itemEdit={itemEdit} itemEditPass={itemEditPass} />}
 
 			{/* View menu */}
 			<View className="place-items-center">
@@ -111,8 +120,8 @@ export default function MenuQuotation() {
 						<Text className="border border-black p-2 m-1 w-20 bg-gray-300 font-bold">Cost</Text>
 					</View>
 				</View>
-				{menuItem.map((item) => (
-					<EditFoodComponent item={item} index={item.id} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={setMenuItem} editorPass={editorPass} />
+				{menuQuotation.map((item) => (
+					<EditFoodComponent item={item} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={setMenuQuotation} editorPass={editorPass} />
 				))}
 			</View>
 

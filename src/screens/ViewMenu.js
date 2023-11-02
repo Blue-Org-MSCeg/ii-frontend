@@ -14,13 +14,14 @@ export default function ViewMenu() {
 	const [isEditFoodOpen, setIsEditFoodOpen] = useState(false);
 
 	useEffect(() => {
-		fetch('http://192.168.137.1:3000/api/v1/menus/')
+		fetch('http://192.168.141.152:3000/api/v1/menus/')
 			.then((response) => response.json())
 			.then((res) => setMenuItem(res.data.menu))
 			.catch((err) => console.log(err));
 	}, [formData]);
 
 	const editorPass = (item) => {
+		console.log('editor:', item);
 		setItemEdit(item);
 	};
 
@@ -46,7 +47,7 @@ export default function ViewMenu() {
 
 	// posting the food to the db when submit button is pressed
 	useEffect(() => {
-		fetch('http://192.168.137.1:3000/api/v1/menus/', {
+		fetch('http://192.168.141.152:3000/api/v1/menus/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
