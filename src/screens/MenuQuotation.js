@@ -12,6 +12,7 @@ export default function MenuQuotation() {
 	const [itemEdit, setItemEdit] = useState('');
 	const [isAddFoodOpen, setIsAddFoodOpen] = useState(false);
 	const [isEditFoodOpen, setIsEditFoodOpen] = useState(false);
+	let [menuQuotation, setMenuQuotation] = useState([]);
 
 	const editorPass = (item) => {
 		setItemEdit(item);
@@ -34,10 +35,58 @@ export default function MenuQuotation() {
 		setIsAddFoodOpen(!isAddFoodOpen);
 	};
 
-	const addFood = () => {
-		setMenuItem((currentMenu) => [...currentMenu, { food: food, cost: cost }]);
-		toggleAddFoodHandler();
+	// getting the menu quotation respective to the client
+	const changeOrderList = (client) => {
+		setClient(client);
+		setMenuQuotation(client.menuQuotation);
 	};
+
+	const addFood = () => {
+		// setMenuItem((currentMenu) => [...currentMenu, { food: food, cost: cost }]);
+		setFormData({
+			foodItem: food,
+			cost: cost,
+		});
+	};
+
+	// posting the food to the db when submit button is pressed
+	useEffect(() => {
+		console.log(formData);
+		fetch(`http://192.168.137.1:3000/api/v1/clients/quotation/${client.id}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(formData),
+		})
+			.then((response) => {
+				if (!response.ok) {
+					// Handle non-successful HTTP status codes (e.g., 4xx, 5xx)
+					throw new Error(`Request failed with status: ${response.status}`);
+				}
+				// Check the content type of the response
+				const contentType = response.headers.get('content-type');
+				if (contentType && contentType.includes('application/json')) {
+					return response.json(); // Parse JSON if the content type is JSON
+				} else {
+					throw new Error('Response is not valid JSON'); // Handle non-JSON response
+				}
+			})
+			.then((data) => {
+				// Handle the parsed JSON data here
+				console.log(data);
+			})
+			.catch((err) => {
+				// Handle errors, including the JSON parsing error
+				console.log(err);
+			});
+
+		setMenuQuotation((currentValue) => [...currentValue, formData]);
+
+		toggleAddFoodHandler();
+	}, [formData]);
+
+	// edit menu quotation
 
 	useEffect(() => {
 		setFormData({
@@ -45,35 +94,28 @@ export default function MenuQuotation() {
 			foodItem: itemEdit.foodItem,
 			cost: Number(itemEdit.cost),
 		});
-		// itemEdit.cost = Number(itemEdit.cost);
-		console.log('changed', typeof itemEdit.cost);
 	}, [itemEdit]);
 
 	useEffect(() => {
-		console.log('formData changed');
-		fetch(`http://192.168.141.152:3000/api/v1/clients/quotation/${client._id}`, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(itemEdit),
-		})
-			.then((response) => response.json())
-			.then((data) => console.log(data))
-			.catch((err) => console.log(err));
+		if (formData.length !== 0) {
+			console.log('formData changed');
+			fetch(`http://192.168.137.1:3000/api/v1/clients/quotation/${client.id}`, {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(itemEdit),
+			})
+				.then((response) => response.json())
+				.then((data) => console.log(data))
+				.catch((err) => console.log(err));
 
-		if (itemEdit) {
-			const updatedQuotation = menuQuotation.map((item) => (item._id === itemEdit._id ? { _id: itemEdit._id, foodItem: itemEdit.foodItem, cost: itemEdit.cost } : item));
-			setMenuQuotation(updatedQuotation);
+			if (itemEdit) {
+				const updatedQuotation = menuQuotation.map((item) => (item._id === itemEdit._id ? { _id: itemEdit._id, foodItem: itemEdit.foodItem, cost: itemEdit.cost } : item));
+				setMenuQuotation(updatedQuotation);
+			}
 		}
 	}, [formData]);
-
-	// getting the menu quotation respective to the client
-	let [menuQuotation, setMenuQuotation] = useState([]);
-	const changeOrderList = (client) => {
-		setClient(client);
-		setMenuQuotation(client.menuQuotation);
-	};
 
 	return (
 		<View className="w-full">

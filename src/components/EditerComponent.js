@@ -10,6 +10,7 @@ export default EditerComponent = ({ itemEdit, itemEditPass }) => {
 		itemEdit.foodItem = editedItemFood;
 		itemEdit.cost = editedItemCost;
 		itemEdit._id = itemEdit._id;
+		console.log(itemEdit);
 		itemEditPass(itemEdit);
 	};
 
