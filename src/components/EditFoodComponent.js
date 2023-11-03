@@ -1,11 +1,6 @@
 import { Button, Text, View } from 'react-native';
 
 export default EditFoodComponent = ({ item, setIsEditFoodOpen, setMenuItem, editorPass }) => {
-	// const handleRemove = (index) => {
-	// 	const newOptions = [...menuItem];
-	// 	newOptions.splice(index, 1);
-	// 	setMenuItem(newOptions);
-	// };
 	return (
 		<View className=" flex-row mb-3 justify-between mr-2" key={item._id}>
 			<View className="border border-black p-2 m-1 w-40 bg-gray-300">

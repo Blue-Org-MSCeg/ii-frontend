@@ -9,8 +9,10 @@ export default function MenuQuotation() {
 	const [food, setFood] = useState('');
 	const [client, setClient] = useState({});
 	const [formData, setFormData] = useState({});
-	const [itemEdit, setItemEdit] = useState('');
-	const [isAddFoodOpen, setIsAddFoodOpen] = useState(false);
+	const [editFormData, setEditFormData] = useState({});
+	const [itemEdit, setItemEdit] = useState({});
+	const [editedItem, setEditedItem] = useState({});
+	const [isAddFoodOpen, setIsAddFoodOpen] = useState(true);
 	const [isEditFoodOpen, setIsEditFoodOpen] = useState(false);
 	let [menuQuotation, setMenuQuotation] = useState([]);
 
@@ -19,8 +21,8 @@ export default function MenuQuotation() {
 	};
 
 	const itemEditPass = (itemEdit) => {
-		// console.log('item edit pass', itemEdit);
-		setItemEdit(itemEdit);
+		console.log('item edit pass', itemEdit);
+		setEditedItem(itemEdit);
 	};
 
 	const changeFood = (food) => {
@@ -42,7 +44,6 @@ export default function MenuQuotation() {
 	};
 
 	const addFood = () => {
-		// setMenuItem((currentMenu) => [...currentMenu, { food: food, cost: cost }]);
 		setFormData({
 			foodItem: food,
 			cost: cost,
@@ -51,7 +52,6 @@ export default function MenuQuotation() {
 
 	// posting the food to the db when submit button is pressed
 	useEffect(() => {
-		console.log(formData);
 		fetch(`http://192.168.137.1:3000/api/v1/clients/quotation/${client.id}`, {
 			method: 'PUT',
 			headers: {
@@ -87,17 +87,18 @@ export default function MenuQuotation() {
 	}, [formData]);
 
 	// edit menu quotation
-
 	useEffect(() => {
-		setFormData({
+		console.log('changed edit form data');
+		setEditFormData({
 			_id: itemEdit._id,
 			foodItem: itemEdit.foodItem,
 			cost: Number(itemEdit.cost),
 		});
-	}, [itemEdit]);
+	}, [editedItem]);
 
 	useEffect(() => {
-		if (formData.length !== 0) {
+		console.log(Object.keys(editFormData));
+		if (Object.keys(editFormData).length !== 0) {
 			console.log('formData changed');
 			fetch(`http://192.168.137.1:3000/api/v1/clients/quotation/${client.id}`, {
 				method: 'PATCH',
@@ -115,7 +116,7 @@ export default function MenuQuotation() {
 				setMenuQuotation(updatedQuotation);
 			}
 		}
-	}, [formData]);
+	}, [editFormData]);
 
 	return (
 		<View className="w-full">
@@ -150,7 +151,7 @@ export default function MenuQuotation() {
 				</View>
 			)}
 
-			{isEditFoodOpen && <EditerComponent itemEdit={itemEdit} itemEditPass={itemEditPass} />}
+			{isEditFoodOpen && <EditerComponent itemEdit={itemEdit} itemEditPass={itemEditPass} setIsEditFoodOpen={setIsEditFoodOpen} />}
 
 			{/* View menu */}
 			<View className="place-items-center">

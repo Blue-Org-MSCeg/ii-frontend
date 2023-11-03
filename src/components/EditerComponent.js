@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-export default EditerComponent = ({ itemEdit, itemEditPass }) => {
-	const [editedItemCost, setEditedItemCost] = useState(JSON.stringify(itemEdit.cost));
+export default EditerComponent = ({ itemEdit, itemEditPass, setIsEditFoodOpen }) => {
+	const [editedItemCost, setEditedItemCost] = useState(itemEdit.cost.toString());
 	const [editedItemFood, setEditedItemFood] = useState(itemEdit.foodItem);
 
 	const updateEditedItem = () => {
@@ -10,18 +10,9 @@ export default EditerComponent = ({ itemEdit, itemEditPass }) => {
 		itemEdit.foodItem = editedItemFood;
 		itemEdit.cost = editedItemCost;
 		itemEdit._id = itemEdit._id;
-		console.log(itemEdit);
 		itemEditPass(itemEdit);
+		setIsEditFoodOpen(false);
 	};
-
-	//   const handleEdit = () => {
-	//     const updatedItem = menuItem.map((item) =>
-	//       item.food === isEditingFood ? { ...item, cost: editedItemCost } : item
-	//     );
-	//     setMenuItem(updatedItem);
-	//     setIsEditFoodOpen("");
-	//     setEditedItemCost("");
-	//   };
 
 	return (
 		<View className="justify-between mt-5 mb-10 border-b">
