@@ -118,6 +118,23 @@ export default function MenuQuotation() {
 		}
 	}, [editFormData]);
 
+	// delete item from client's menu quotation
+	const deleteItem = (item) => {
+		console.log('delete:', item);
+		fetch(`http://192.168.137.1:3000/api/v1/clients/quotation/${client.id}/${item._id}`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then((response) => response.json())
+			.then((data) => console.log('deleted successfully'))
+			.catch((err) => console.error(err));
+
+		const updatedMenuQuotation = menuQuotation.filter((menu) => menu._id !== item._id);
+		setMenuQuotation(updatedMenuQuotation);
+	};
+
 	return (
 		<View className="w-full">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
@@ -164,7 +181,7 @@ export default function MenuQuotation() {
 					</View>
 				</View>
 				{menuQuotation.map((item) => (
-					<EditFoodComponent item={item} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={setMenuQuotation} editorPass={editorPass} />
+					<EditFoodComponent item={item} setIsEditFoodOpen={setIsEditFoodOpen} editorPass={editorPass} deleteItem={deleteItem} />
 				))}
 			</View>
 

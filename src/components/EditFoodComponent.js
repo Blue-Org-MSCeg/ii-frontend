@@ -1,6 +1,6 @@
 import { Button, Text, View } from 'react-native';
 
-export default EditFoodComponent = ({ item, setIsEditFoodOpen, setMenuItem, editorPass }) => {
+export default EditFoodComponent = ({ item, setIsEditFoodOpen, editorPass, deleteItem }) => {
 	return (
 		<View className=" flex-row mb-3 justify-between mr-2" key={item._id}>
 			<View className="border border-black p-2 m-1 w-40 bg-gray-300">
@@ -20,7 +20,7 @@ export default EditFoodComponent = ({ item, setIsEditFoodOpen, setMenuItem, edit
 				/>
 			</View>
 			<View className="m-1">
-				<Button title="remove" onPress={() => handleRemove(index)} />
+				<Button title="remove" onPress={() => deleteItem(item)} />
 			</View>
 		</View>
 	);

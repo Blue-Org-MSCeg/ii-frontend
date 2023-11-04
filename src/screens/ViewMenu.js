@@ -107,6 +107,23 @@ export default function ViewMenu() {
 		}
 	}, [editFormData]);
 
+	// remove food from menu
+	const deleteMenuItem = (item) => {
+		console.log('delete:', item);
+		fetch(`http://192.168.137.1:3000/api/v1/menus/${item._id}`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then((response) => response.json())
+			.then((data) => console.log('deleted successfully'))
+			.catch((err) => console.error(err));
+
+		const updatedMenu = menuItem.filter((menu) => menu._id !== item._id);
+		setMenuItem(updatedMenu);
+	};
+
 	return (
 		<View className="w-full">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
@@ -150,7 +167,7 @@ export default function ViewMenu() {
 					</View>
 				</View>
 				{menuItem.map((item) => (
-					<EditFoodComponent item={item} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={menuItem} editorPass={editorPass} />
+					<EditFoodComponent item={item} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={menuItem} editorPass={editorPass} deleteItem={deleteMenuItem} />
 				))}
 			</View>
 			<TouchableOpacity>
