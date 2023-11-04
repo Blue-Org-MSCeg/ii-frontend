@@ -18,7 +18,7 @@ export default function HomeScreen({ navigation }) {
 			<Head />
 			<View className="w-full flex flex-row items-center flex-wrap content-start mt-4 ">
 				{menu.map((item) => (
-					<TouchableOpacity keu={item.id} className="bg-gray-300 p-4 m-6 w-32 h-32 justify-items-center items-center justify-end rounded-md" onPress={() => navigation.navigate(item.to)}>
+					<TouchableOpacity key={item.id} className="bg-gray-300 p-4 m-6 w-32 h-32 justify-items-center items-center justify-end rounded-md" onPress={() => navigation.navigate(item.to)}>
 						<FontAwesome name={item.icon} size={32} />
 						<Text className="text-center mt-2">{item.label}</Text>
 					</TouchableOpacity>
