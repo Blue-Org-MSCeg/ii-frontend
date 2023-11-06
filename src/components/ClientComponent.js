@@ -5,7 +5,7 @@ import { Text, View } from 'react-native';
 export default function ClientComponent(props) {
 	const deleteClient = (id) => {
 		console.log('delete:', id);
-		fetch(`http://192.168.137.1:3000/api/v1/clients/${id}`, {
+		fetch(`http://192.168.197.222:3000/api/v1/clients/${id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',

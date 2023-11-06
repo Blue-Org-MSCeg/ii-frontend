@@ -16,7 +16,7 @@ export default function ViewMenu() {
 	const [isEditFoodOpen, setIsEditFoodOpen] = useState(false);
 
 	useEffect(() => {
-		fetch('http://192.168.137.1:3000/api/v1/menus/')
+		fetch('http://192.168.197.222:3000/api/v1/menus/')
 			.then((response) => response.json())
 			.then((res) => setMenuItem(res.data.menu))
 			.catch((err) => console.log(err));
