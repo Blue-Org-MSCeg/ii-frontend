@@ -9,7 +9,7 @@ const DropDown = (props) => {
 	const [clientList, setClientList] = useState([]);
 
 	useEffect(() => {
-		fetch('http://192.168.197.222:3000/api/v1/clients/')
+		fetch('http://10.11.48.118:3000/api/v1/clients/')
 			.then((response) => response.json())
 			.then((res) => setClients(res.data.clients))
 			.catch((err) => console.log(err));
