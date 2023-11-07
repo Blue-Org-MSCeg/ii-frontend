@@ -13,6 +13,11 @@ export default function ViewClients() {
       .catch((err) => console.log(err));
   }, []);
 
+  const handleDelete = (id) => {
+    const updatedCLients = clients.filter((client) => client._id !== id);
+    setClients(updatedCLients);
+  };
+
   return (
     <View className="w-screen">
       <Head />
@@ -24,8 +29,9 @@ export default function ViewClients() {
           <View className="w-full flex items-center relative">
             {clients.map((client) => (
               <ClientComponent
-                keyval={client._id}
+                id={client._id}
                 clientName={client.businessName}
+                handleDelete={handleDelete}
               />
             ))}
           </View>

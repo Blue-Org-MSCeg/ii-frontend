@@ -1,26 +1,18 @@
 import { useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-export default EditerComponent = ({ itemEdit, setItemEdit }) => {
-	const [editedItemCost, setEditedItemCost] = useState(itemEdit.cost);
-	const [editedItemFood, setEditedItemFood] = useState(itemEdit.food);
+export default EditerComponent = ({ itemEdit, itemEditPass, setIsEditFoodOpen }) => {
+	const [editedItemCost, setEditedItemCost] = useState(itemEdit.cost.toString());
+	const [editedItemFood, setEditedItemFood] = useState(itemEdit.foodItem);
 
 	const updateEditedItem = () => {
 		console.log('save button pressed');
-		itemEdit.food = editedItemFood;
+		itemEdit.foodItem = editedItemFood;
 		itemEdit.cost = editedItemCost;
-		itemEdit.id = itemEdit.id;
-		setItemEdit(itemEdit);
+		itemEdit._id = itemEdit._id;
+		itemEditPass(itemEdit);
+		setIsEditFoodOpen(false);
 	};
-
-	//   const handleEdit = () => {
-	//     const updatedItem = menuItem.map((item) =>
-	//       item.food === isEditingFood ? { ...item, cost: editedItemCost } : item
-	//     );
-	//     setMenuItem(updatedItem);
-	//     setIsEditFoodOpen("");
-	//     setEditedItemCost("");
-	//   };
 
 	return (
 		<View className="justify-between mt-5 mb-10 border-b">
@@ -28,11 +20,11 @@ export default EditerComponent = ({ itemEdit, setItemEdit }) => {
 				<Text className="text-center ">Edit</Text>
 			</View>
 			<View className="flex-row justify-center mb-5">
-				<TextInput className="border-2 border-black w-20 mr-10" value={editedItemFood} onChangeText={setEditedItemFood} placeholder="food" />
-				<TextInput className="border-2 border-black w-20 mr-10" value={editedItemCost} onChangeText={setEditedItemCost} placeholder="Cost" keyboardType="numeric" />
-				<View className="ml-2">
-					<Button title="Save" onPress={updateEditedItem} />
-				</View>
+				<TextInput className="border-2 border-black w-20 mr-10 px-1" value={editedItemFood} onChangeText={setEditedItemFood} placeholder="food" />
+				<TextInput className="border-2 border-black w-20 mr-10 px-1" value={editedItemCost} onChangeText={setEditedItemCost} placeholder="cost" keyboardType="numeric" />
+				<TouchableOpacity className=" text-center px-4 py-1 rounded-sm bg-blue-400" onPress={updateEditedItem}>
+					<Text className="text-white text-center">Save</Text>
+				</TouchableOpacity>
 			</View>
 		</View>
 	);
