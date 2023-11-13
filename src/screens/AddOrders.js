@@ -19,6 +19,11 @@ export default AddOrders = () => {
   };
 
   const [selectedStartDate, setSelectedStartDate] = useState("");
+  const [date, setDate] = useState("");
+  const getDate = (date) => {
+    setDate(date);
+    console.log(date);
+  };
 
   // getting the menu quotation respective to the client
   let [menuQuotation, setMenuQuotation] = useState([]);
@@ -40,6 +45,10 @@ export default AddOrders = () => {
     setMenuQuotation(updatedOrder);
   };
 
+  useEffect(() => {
+    // console.log(menuQuotation);
+    setOrder(menuQuotation);
+  }, [menuQuotation]);
   useEffect(() => {
     // console.log(menuQuotation);
     setOrder(menuQuotation);
@@ -68,11 +77,18 @@ export default AddOrders = () => {
       orders: formattedOrder,
     });
   }, [formattedOrder]);
+  useEffect(() => {
+    // console.log('formated:', formattedOrder);
+    setFormData({
+      businessName: businessName,
+      orders: formattedOrder,
+    });
+  }, [formattedOrder]);
 
   useEffect(() => {
     console.log(formData);
     if (formData.orders !== null) {
-      fetch("http://192.168.137.169:3000/api/v1/orders/", {
+      fetch("http://192.168.120.16:3000/api/v1/orders/", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(formData),
@@ -102,6 +118,7 @@ export default AddOrders = () => {
             isCalendarOpen={isCalendarOpen}
             setSelectedStartDate={setSelectedStartDate}
             handleOpenCalendar={handleOpenCalendar}
+            setDate={getDate}
           />
           <View>
             <View className="flex flex-row justify-between py-2 px-10 bg-zinc-300 w-11/12 mt-9 border-b">
