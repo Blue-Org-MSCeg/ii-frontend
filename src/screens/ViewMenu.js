@@ -70,7 +70,15 @@ export default function ViewMenu() {
 	useEffect(() => {
 		console.log(itemEdit);
 		if (itemEdit) {
-			const updatedItem = menuItem.map((item) => (item._id === itemEdit._id ? { _id: itemEdit._id, foodItem: itemEdit.foodItem, cost: itemEdit.cost } : item));
+			const updatedItem = menuItem.map((item) =>
+				item._id === itemEdit._id
+					? {
+							_id: itemEdit._id,
+							foodItem: itemEdit.foodItem,
+							cost: itemEdit.cost,
+					  }
+					: item
+			);
 			setMenuItem(updatedItem);
 		}
 	}, [itemEdit]);
@@ -101,7 +109,15 @@ export default function ViewMenu() {
 				.catch((err) => console.log(err));
 
 			if (itemEdit) {
-				const updatedItem = menuItem.map((item) => (item._id === itemEdit._id ? { _id: itemEdit._id, foodItem: itemEdit.foodItem, cost: itemEdit.cost } : item));
+				const updatedItem = menuItem.map((item) =>
+					item._id === itemEdit._id
+						? {
+								_id: itemEdit._id,
+								foodItem: itemEdit.foodItem,
+								cost: itemEdit.cost,
+						  }
+						: item
+				);
 				setMenuItem(updatedItem);
 			}
 		}

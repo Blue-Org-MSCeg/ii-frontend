@@ -20,11 +20,13 @@ const DropDown = (props) => {
 			setClientList((currentValue) => [
 				...currentValue,
 				{
+					...client,
 					label: client.businessName,
 					value: client.businessName,
-					businessName: client.businessName,
-					id: client._id,
-					menuQuotation: client.menuQuotation,
+					// businessName: client.businessName,
+					// id: client._id,
+					// menuQuotation: client.menuQuotation,
+
 					// cost: client.cost,
 				},
 			]);

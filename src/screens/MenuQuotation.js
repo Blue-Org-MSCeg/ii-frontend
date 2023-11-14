@@ -112,7 +112,15 @@ export default function MenuQuotation() {
 				.catch((err) => console.log(err));
 
 			if (itemEdit) {
-				const updatedQuotation = menuQuotation.map((item) => (item._id === itemEdit._id ? { _id: itemEdit._id, foodItem: itemEdit.foodItem, cost: itemEdit.cost } : item));
+				const updatedQuotation = menuQuotation.map((item) =>
+					item._id === itemEdit._id
+						? {
+								_id: itemEdit._id,
+								foodItem: itemEdit.foodItem,
+								cost: itemEdit.cost,
+						  }
+						: item
+				);
 				setMenuQuotation(updatedQuotation);
 			}
 		}

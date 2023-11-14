@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import Head from '../components/Head';
 import ClientComponent from '../components/ClientComponent';
 import { useEffect, useState } from 'react';
@@ -32,7 +32,7 @@ export default function ViewClients({ navigation }) {
 						))}
 					</View>
 					<View className="absolute top-full left-10 mt-4">
-						<TouchableOpacity className="bg-blue-500 p-3 rounded-lg" onPress={() => navigation.navigate('AddClient')}>
+						<TouchableOpacity className="bg-blue-500 p-3 rounded-lg">
 							<Text className="text-white">Add Client</Text>
 						</TouchableOpacity>
 					</View>
