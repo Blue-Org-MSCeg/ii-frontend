@@ -1,13 +1,13 @@
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Alert } from 'react-native';
 import Head from '../components/Head';
 import ClientComponent from '../components/ClientComponent';
 import { useEffect, useState } from 'react';
 
-export default function ViewClients() {
+export default function ViewClients({ navigation }) {
 	const [clients, setClients] = useState([]);
 
 	useEffect(() => {
-		fetch('http://192.168.197.222:3000/api/v1/clients/')
+		fetch('http://192.168.137.1:3000/api/v1/clients/')
 			.then((response) => response.json())
 			.then((res) => setClients(res.data.clients))
 			.catch((err) => console.log(err));
@@ -32,7 +32,7 @@ export default function ViewClients() {
 						))}
 					</View>
 					<View className="absolute top-full left-10 mt-4">
-						<TouchableOpacity className="bg-blue-500 p-3 rounded-lg">
+						<TouchableOpacity className="bg-blue-500 p-3 rounded-lg" onPress={() => navigation.navigate('AddClient')}>
 							<Text className="text-white">Add Client</Text>
 						</TouchableOpacity>
 					</View>

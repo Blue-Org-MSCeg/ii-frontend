@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import DropDown from '../components/DropDown';
 import Head from '../components/Head';
@@ -91,7 +91,7 @@ export default function EditOrder() {
 		// console.log(newDate);
 	};
 	return (
-		<View className="flex-1 bg-white-500">
+		<ScrollView className="flex-1 bg-white-500">
 			<Head />
 			<View className="">
 				<DropDown changeOrderList={changeOrderList} />
@@ -116,6 +116,6 @@ export default function EditOrder() {
           <Text className="text-center text-white">submit</Text>
         </TouchableOpacity> */}
 			</View>
-		</View>
+		</ScrollView>
 	);
 }

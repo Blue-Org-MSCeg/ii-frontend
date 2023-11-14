@@ -52,7 +52,7 @@ export default function MenuQuotation() {
 
 	// posting the food to the db when submit button is pressed
 	useEffect(() => {
-		fetch(`http://192192.168.197.222:3000/api/v1/clients/quotation/${client.id}`, {
+		fetch(`http://192.168.61.152:3000/api/v1/clients/quotation/${client.id}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ export default function MenuQuotation() {
 		console.log(Object.keys(editFormData));
 		if (Object.keys(editFormData).length !== 0) {
 			console.log('formData changed');
-			fetch(`http://192.168.197.222:3000/api/v1/clients/quotation/${client.id}`, {
+			fetch(`http://192.168.61.152:3000/api/v1/clients/quotation/${client.id}`, {
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ export default function MenuQuotation() {
 	// delete item from client's menu quotation
 	const deleteItem = (item) => {
 		console.log('delete:', item);
-		fetch(`http://192.168.197.222:3000/api/v1/clients/quotation/${client.id}/${item._id}`, {
+		fetch(`http://192.168.61.152:3000/api/v1/clients/quotation/${client.id}/${item._id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',

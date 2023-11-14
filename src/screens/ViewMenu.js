@@ -16,7 +16,7 @@ export default function ViewMenu() {
 	const [isEditFoodOpen, setIsEditFoodOpen] = useState(false);
 
 	useEffect(() => {
-		fetch('http://192.168.197.222:3000/api/v1/menus/')
+		fetch('http://192.168.61.152:3000/api/v1/menus/')
 			.then((response) => response.json())
 			.then((res) => setMenuItem(res.data.menu))
 			.catch((err) => console.log(err));
@@ -53,7 +53,7 @@ export default function ViewMenu() {
 
 	// posting the food to the db when submit button is pressed
 	useEffect(() => {
-		fetch('http://192.168.141.152:3000/api/v1/menus/', {
+		fetch('http://192.168.61.152:3000/api/v1/menus/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ export default function ViewMenu() {
 		console.log(Object.keys(editFormData));
 		if (Object.keys(editFormData).length !== 0) {
 			console.log('formData changed');
-			fetch(`http://192.168.137.1:3000/api/v1/menus/${editFormData._id}`, {
+			fetch(`http://192.168.61.152:3000/api/v1/menus/${editFormData._id}`, {
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ export default function ViewMenu() {
 	// remove food from menu
 	const deleteMenuItem = (item) => {
 		console.log('delete:', item);
-		fetch(`http://192.168.137.1:3000/api/v1/menus/${item._id}`, {
+		fetch(`http://192.168.61.152:3000/api/v1/menus/${item._id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',

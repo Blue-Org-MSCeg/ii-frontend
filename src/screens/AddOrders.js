@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Head from './../components/Head';
 import { useEffect, useState } from 'react';
 import DateComponent from '../components/DateComponent';
@@ -89,7 +89,7 @@ export default AddOrders = () => {
 	}, [formData]);
 
 	return (
-		<View>
+		<ScrollView>
 			<Head />
 			<Text className="text-lg text-center">Add Orders</Text>
 			<View>
@@ -115,6 +115,6 @@ export default AddOrders = () => {
 					</TouchableOpacity>
 				</View>
 			</View>
-		</View>
+		</ScrollView>
 	);
 };
