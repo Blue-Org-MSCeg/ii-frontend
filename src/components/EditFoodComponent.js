@@ -1,27 +1,34 @@
-import { Button, Text, View } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { Button, Text, TouchableOpacity, View } from 'react-native';
 
 export default EditFoodComponent = ({ item, setIsEditFoodOpen, editorPass, deleteItem }) => {
 	return (
-		<View className=" flex-row mb-3 justify-between mr-2" key={item._id}>
-			<View className="border border-black p-2 m-1 w-40 bg-gray-300">
-				<Text>{item.foodItem}</Text>
+		<View className=" flex-row justify-between items-center mx-3 bg-gray-300" key={item._id}>
+			<View className="p-2 m-1 w-40 ">
+				<Text className="text-base">{item.foodItem}</Text>
 			</View>
-			<View className="border border-black p-2 m-1 w-20 bg-gray-300">
-				<Text className=" text-center ">{item.cost}</Text>
+			<View className="p-2 m-1 w-20 ">
+				<Text className=" text-center text-base">{item.cost}</Text>
 			</View>
 
-			<View className="mr-2 m-1">
-				<Button
+			<TouchableOpacity>
+				<Text
 					title="edit"
 					onPress={() => {
 						setIsEditFoodOpen(true);
 						editorPass(item);
 					}}
-				/>
-			</View>
-			<View className="m-1">
+					className="bg-blue-500 px-3 py-1 rounded-md text-white"
+				>
+					Edit
+				</Text>
+			</TouchableOpacity>
+			{/* <View className="m-1">
 				<Button title="remove" onPress={() => deleteItem(item)} />
-			</View>
+			</View> */}
+			<TouchableOpacity className="px-3 py-1 rounded-full" onPress={() => deleteItem(item)}>
+				<FontAwesome name="minus" color="red" size={18} />
+			</TouchableOpacity>
 		</View>
 	);
 };

@@ -52,7 +52,7 @@ export default function MenuQuotation() {
 
 	// posting the food to the db when submit button is pressed
 	useEffect(() => {
-		fetch(`http://192.168.61.152:3000/api/v1/clients/quotation/${client.id}`, {
+		fetch(`http://192.168.137.1:3000/api/v1/clients/quotation/${client._id}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ export default function MenuQuotation() {
 		console.log(Object.keys(editFormData));
 		if (Object.keys(editFormData).length !== 0) {
 			console.log('formData changed');
-			fetch(`http://192.168.61.152:3000/api/v1/clients/quotation/${client.id}`, {
+			fetch(`http://192.168.137.1:3000/api/v1/clients/quotation/${client._id}`, {
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ export default function MenuQuotation() {
 	// delete item from client's menu quotation
 	const deleteItem = (item) => {
 		console.log('delete:', item);
-		fetch(`http://192.168.61.152:3000/api/v1/clients/quotation/${client.id}/${item._id}`, {
+		fetch(`http://192.168.137.1:3000/api/v1/clients/quotation/${client._id}/${item._id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
@@ -180,12 +180,12 @@ export default function MenuQuotation() {
 
 			{/* View menu */}
 			<View className="place-items-center">
-				<View className="flex-row">
+				<View className="flex-row bg-gray-300  mx-3 mb-2">
 					<View>
-						<Text className="border border-black p-2 m-1 w-40 bg-gray-300 font-bold">Items</Text>
+						<Text className=" p-2 m-1 w-40  font-bold">Items</Text>
 					</View>
 					<View>
-						<Text className="border border-black p-2 m-1 w-20 bg-gray-300 font-bold">Cost</Text>
+						<Text className="p-2 m-1 w-20 left-5 font-bold">Cost</Text>
 					</View>
 				</View>
 				{menuQuotation.map((item) => (
@@ -194,7 +194,7 @@ export default function MenuQuotation() {
 			</View>
 
 			<TouchableOpacity>
-				<View className="w-20 justify-between p-1 rounded-md mt-10">
+				<View className="w-20 justify-between p-1 rounded-md mt-10 ml-4">
 					<Button title="ADD" onPress={toggleAddFoodHandler} />
 				</View>
 			</TouchableOpacity>

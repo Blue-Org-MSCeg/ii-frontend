@@ -1,13 +1,13 @@
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View, Alert } from 'react-native';
 import Head from './../components/Head';
 import { useEffect, useState } from 'react';
 import DateComponent from '../components/DateComponent';
 import MenuComponent from './../components/MenuComponent';
 import DropDown from '../components/DropDown';
 
-export default AddOrders = () => {
+export default AddOrders = ({ navigation }) => {
 	// setting the form data
-	const [formData, setFormData] = useState([]);
+	const [formData, setFormData] = useState({ orders: [] });
 
 	// setting client name
 	const [businessName, setBusinessName] = useState('');
@@ -20,9 +20,10 @@ export default AddOrders = () => {
 
 	const [selectedStartDate, setSelectedStartDate] = useState('');
 	const [date, setDate] = useState('');
+	// getting and formatting date from DateComponent
 	const getDate = (date) => {
-		setDate(date);
-		console.log(date);
+		const newDate = new Date(date.replaceAll('/', '-'));
+		setDate(newDate);
 	};
 
 	// getting the menu quotation respective to the client
@@ -41,19 +42,16 @@ export default AddOrders = () => {
 			}
 			return item;
 		});
-		// console.log(updatedOrder);
 		setMenuQuotation(updatedOrder);
 	};
 
 	useEffect(() => {
-		// console.log(menuQuotation);
 		setOrder(menuQuotation);
 	}, [menuQuotation]);
 
 	const [formattedOrder, setFormattedData] = useState([]);
 	// post data to backend
 	const handleSubmit = () => {
-		// useEffect(() => {
 		if (order.length > 0) {
 			order = order
 				.filter((ord) => ord.numberOfHeads) // Remove items without numberOfHeads
@@ -62,22 +60,24 @@ export default AddOrders = () => {
 					numberOfHeads: ord.numberOfHeads,
 				}));
 		}
-		// console.log('order = ', order);
 		setFormattedData(order);
 	};
 
 	useEffect(() => {
-		// console.log('formated:', formattedOrder);
+		if (formattedOrder.length == 0) {
+			Alert.alert('Validation Error', 'No order added', [{ text: 'OK' }]);
+		}
 		setFormData({
 			businessName: businessName,
+			orderDate: date,
 			orders: formattedOrder,
 		});
 	}, [formattedOrder]);
 
 	useEffect(() => {
 		console.log(formData);
-		if (formData.orders !== null) {
-			fetch('http://10.11.48.118:3000/api/v1/orders/', {
+		if (formData.orders.length !== 0) {
+			fetch('http://192.168.137.1:3000/api/v1/orders/', {
 				method: 'POST',
 				headers: { 'Content-type': 'application/json' },
 				body: JSON.stringify(formData),
@@ -85,11 +85,12 @@ export default AddOrders = () => {
 				.then((response) => response.json())
 				.then((data) => console.log(data))
 				.catch((err) => console.log(err));
+			navigation.navigate('Home');
 		}
 	}, [formData]);
 
 	return (
-		<ScrollView>
+		<View>
 			<Head />
 			<Text className="text-lg text-center">Add Orders</Text>
 			<View>
@@ -115,6 +116,6 @@ export default AddOrders = () => {
 					</TouchableOpacity>
 				</View>
 			</View>
-		</ScrollView>
+		</View>
 	);
 };

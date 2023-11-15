@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'react-native';
+import { View, Button, Text } from 'react-native';
 
 import DropDown from '../components/DropDown';
 import { shareAsync } from 'expo-sharing';
@@ -127,6 +127,9 @@ const IRgeneration = () => {
 
 	return (
 		<View className="flex-1">
+			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
+				<Text className="text-center">Invoice Generation</Text>
+			</View>
 			<DropDown changeOrderList={changeOrderList} />
 
 			<View className="justify-between items-center mb-28">

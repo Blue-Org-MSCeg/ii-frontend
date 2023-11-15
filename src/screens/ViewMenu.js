@@ -1,4 +1,4 @@
-import { View, Text, Button, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Button, TouchableOpacity, TextInput, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import EditFoodComponent from '../components/EditFoodComponent';
 import EditerComponent from '../components/EditerComponent';
@@ -16,7 +16,7 @@ export default function ViewMenu() {
 	const [isEditFoodOpen, setIsEditFoodOpen] = useState(false);
 
 	useEffect(() => {
-		fetch('http://192.168.61.152:3000/api/v1/menus/')
+		fetch('http://192.168.137.1:3000/api/v1/menus/')
 			.then((response) => response.json())
 			.then((res) => setMenuItem(res.data.menu))
 			.catch((err) => console.log(err));
@@ -45,6 +45,11 @@ export default function ViewMenu() {
 	};
 
 	const addFood = () => {
+		if (food == '') {
+			Alert.alert('Validation Error', 'No Food item added', [{ text: 'OK' }]);
+		} else if (cost == '') {
+			Alert.alert('Validation Error', 'Enter food cost', [{ text: 'OK' }]);
+		}
 		setFormData({
 			foodItem: food,
 			cost: cost,
@@ -53,7 +58,7 @@ export default function ViewMenu() {
 
 	// posting the food to the db when submit button is pressed
 	useEffect(() => {
-		fetch('http://192.168.61.152:3000/api/v1/menus/', {
+		fetch('http://192.168.137.1:3000/api/v1/menus/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -83,7 +88,7 @@ export default function ViewMenu() {
 		}
 	}, [itemEdit]);
 
-	// edit menu quotation
+	// edit menu cost
 	useEffect(() => {
 		console.log('changed edit form data');
 		setEditFormData({
@@ -97,7 +102,7 @@ export default function ViewMenu() {
 		console.log(Object.keys(editFormData));
 		if (Object.keys(editFormData).length !== 0) {
 			console.log('formData changed');
-			fetch(`http://192.168.61.152:3000/api/v1/menus/${editFormData._id}`, {
+			fetch(`http://192.168.137.1:3000/api/v1/menus/${editFormData._id}`, {
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
@@ -126,7 +131,7 @@ export default function ViewMenu() {
 	// remove food from menu
 	const deleteMenuItem = (item) => {
 		console.log('delete:', item);
-		fetch(`http://192.168.61.152:3000/api/v1/menus/${item._id}`, {
+		fetch(`http://192.168.137.1:3000/api/v1/menus/${item._id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
@@ -173,13 +178,13 @@ export default function ViewMenu() {
 			{isEditFoodOpen && <EditerComponent itemEdit={itemEdit} itemEditPass={itemEditPass} setIsEditFoodOpen={setIsEditFoodOpen} />}
 
 			{/* View menu */}
-			<View className="place-items-center mx-2">
-				<View className="flex-row">
+			<View className="place-items-center mx-2 ">
+				<View className="flex-row bg-gray-300  mx-3 mb-2">
 					<View>
-						<Text className="border border-black p-2 m-1 w-40 bg-gray-300 font-bold">Items</Text>
+						<Text className=" p-2 m-1 w-40  font-bold">Items</Text>
 					</View>
 					<View>
-						<Text className="border border-black p-2 m-1 w-20 bg-gray-300 font-bold">Cost</Text>
+						<Text className="p-2 m-1 w-20 left-5 font-bold">Cost</Text>
 					</View>
 				</View>
 				{menuItem.map((item) => (

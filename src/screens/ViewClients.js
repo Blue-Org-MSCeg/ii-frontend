@@ -28,7 +28,7 @@ export default function ViewClients({ navigation }) {
 				<View className="w-11/12">
 					<View className="w-full flex items-center relative">
 						{clients.map((client) => (
-							<ClientComponent id={client._id} clientName={client.businessName} handleDelete={handleDelete} />
+							<ClientComponent client={client} handleDelete={handleDelete} />
 						))}
 					</View>
 					<View className="absolute top-full left-10 mt-4">

@@ -11,16 +11,16 @@ export default function EditOrder() {
 	let [date, setDate] = useState('');
 	const [client, setClient] = useState({});
 	const [orderId, setOrderId] = useState('');
+	const [selectedStartDate, setSelectedStartDate] = useState('');
+	const [order, setOrder] = useState([]);
 
 	const handleOpenCalendar = () => {
 		setIsCalendarOpen(!isCalendarOpen);
 	};
-	const [selectedStartDate, setSelectedStartDate] = useState('');
-	const [order, setOrder] = useState([]);
 
 	useEffect(() => {
 		if (date !== '') {
-			fetch(`http://10.11.48.118:3000/api/v1/orders/${client.businessName}/${date}`, {
+			fetch(`http://192.168.137.1:3000/api/v1/orders/${client.businessName}/${date}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export default function EditOrder() {
 	}, [date]);
 
 	const updateOrder = (updatedOrder) => {
-		fetch(`http://10.11.48.118:3000/api/v1/orders/order/${orderId}`, {
+		fetch(`http://192.168.137.1:3000/api/v1/orders/order/${orderId}`, {
 			method: 'PATCH',
 			headers: {
 				'Content-type': 'application/json',
@@ -65,7 +65,7 @@ export default function EditOrder() {
 	};
 
 	const deleteOrder = (orderToBeDeleted) => {
-		fetch(`http://10.11.48.118:3000/api/v1/orders/order/remove/${orderId}`, {
+		fetch(`http://192.168.137.1:3000/api/v1/orders/order/remove/${orderId}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
@@ -91,8 +91,11 @@ export default function EditOrder() {
 		// console.log(newDate);
 	};
 	return (
-		<ScrollView className="flex-1 bg-white-500">
-			<Head />
+		<View className="flex-1 bg-white-500">
+			{/* <Head /> */}
+			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
+				<Text className="text-center">Edit Orders</Text>
+			</View>
 			<View className="">
 				<DropDown changeOrderList={changeOrderList} />
 			</View>
@@ -116,6 +119,6 @@ export default function EditOrder() {
           <Text className="text-center text-white">submit</Text>
         </TouchableOpacity> */}
 			</View>
-		</ScrollView>
+		</View>
 	);
 }
