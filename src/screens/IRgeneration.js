@@ -17,6 +17,8 @@ const IRgeneration = () => {
 	const [client, setClient] = useState({ address: '', items: [] });
 	const [invoice, setInvoice] = useState([]);
 	let totalAmount = 0;
+
+	// invoice template
 	const htmlContent = `
       <html>
         <head>
@@ -64,12 +66,12 @@ const IRgeneration = () => {
 											.map((item, index) => {
 												totalAmount += item.amount;
 												return `<tr key=${item._id}>
-                                        <td className="border">${index + 1}</td>
-                                        <td className="border">${item._id}</td>
-                                        <td className="border">${item.cost}</td>
-                                        <td className="border">${item.quantity}</td>
-                                        <td className="border">${item.amount}</td>
-                                      </tr>`;
+                                  <td className="border">${index + 1}</td>
+                                  <td className="border">${item._id}</td>
+                                  <td className="border">${item.cost}</td>
+                                  <td className="border">${item.quantity}</td>
+                                  <td className="border">${item.amount}</td>
+                                </tr>`;
 											})
 											.join(' ')}
                   </tbody>
@@ -91,6 +93,7 @@ const IRgeneration = () => {
 		setClient(client);
 	};
 
+	// get invoice details form db
 	const generatePDF = async () => {
 		fetch(`http:192.168.137.1:3000/api/v1/orders/invoice/${client.businessName}/2023-10-20/2023-10-31`)
 			.then((response) => {
@@ -104,15 +107,23 @@ const IRgeneration = () => {
 				console.log(data.data.invoice);
 			})
 			.catch((err) => console.log(err));
-
-		const file = await printToFileAsync({
-			html: htmlContent,
-			base64: false,
-		});
-		await shareAsync(file.uri);
 	};
 
-	useEffect(() => {}, [htmlContent]);
+	// print generated invoice to pdf and share
+	const generateAndSharePDF = async () => {
+		if (invoice.length !== 0) {
+			const file = await printToFileAsync({
+				html: htmlContent,
+				base64: false,
+			});
+			await shareAsync(file.uri);
+		}
+	};
+
+	// call generateAndSharePdf whenever the invoice is changed
+	useEffect(() => {
+		generateAndSharePDF();
+	}, [invoice]);
 
 	return (
 		<View className="flex-1">
