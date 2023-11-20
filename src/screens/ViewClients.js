@@ -18,6 +18,10 @@ export default function ViewClients({ navigation }) {
 		setClients(updatedCLients);
 	};
 
+	const handleNavigation = () => {
+		navigation.navigate('AddClient');
+	};
+
 	return (
 		<View className="w-screen">
 			<Head />
@@ -32,7 +36,7 @@ export default function ViewClients({ navigation }) {
 						))}
 					</View>
 					<View className="absolute top-full left-10 mt-4">
-						<TouchableOpacity className="bg-blue-500 p-3 rounded-lg">
+						<TouchableOpacity className="bg-blue-500 p-3 rounded-lg" onPress={handleNavigation}>
 							<Text className="text-white">Add Client</Text>
 						</TouchableOpacity>
 					</View>

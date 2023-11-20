@@ -1,10 +1,8 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import DropDown from '../components/DropDown';
-import Head from '../components/Head';
 import DateComponent from '../components/DateComponent';
 import EditRemove from '../components/EditRemove';
-import MenuComponent from '../components/MenuComponent'; // Make sure to import MenuComponent
 
 export default function EditOrder() {
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -31,7 +29,7 @@ export default function EditOrder() {
 				})
 				.then((data) => {
 					// console.log(date);
-					// console.log(data.data.orders[0]._id);
+					console.log(data.data);
 					setOrder(data.data.orders[0].orders);
 					setOrderId(data.data.orders[0]._id);
 				})
@@ -86,13 +84,13 @@ export default function EditOrder() {
 	};
 
 	const getDate = (date) => {
-		const newDate = new Date(date.replaceAll('/', '-'));
+		let newDate = new Date(date.replaceAll('/', '-'));
+		newDate = new Date(newDate.toISOString().replace('T00:00', 'T18:30'));
 		setDate(newDate);
-		// console.log(newDate);
+		console.log(newDate);
 	};
 	return (
 		<View className="flex-1 bg-white-500">
-			{/* <Head /> */}
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
 				<Text className="text-center">Edit Orders</Text>
 			</View>
@@ -115,9 +113,6 @@ export default function EditOrder() {
 						<EditRemove key={index} item={menuItem} updateOrder={updateOrder} deleteOrder={deleteOrder} />
 					))}
 				</View>
-				{/* <TouchableOpacity className="bg-blue-400 w-20 p-2 rounded-md mt-3">
-          <Text className="text-center text-white">submit</Text>
-        </TouchableOpacity> */}
 			</View>
 		</View>
 	);

@@ -1,5 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { Button, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 export default EditFoodComponent = ({ item, setIsEditFoodOpen, editorPass, deleteItem }) => {
 	return (

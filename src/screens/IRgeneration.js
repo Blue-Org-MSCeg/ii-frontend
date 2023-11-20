@@ -1,9 +1,10 @@
-import { View, Button, Text } from 'react-native';
+import { View, Button, Text, TouchableOpacity, Alert } from 'react-native';
 
 import DropDown from '../components/DropDown';
 import { shareAsync } from 'expo-sharing';
 import { printToFileAsync } from 'expo-print';
 import { useEffect, useState } from 'react';
+import DateComponent from '../components/DateComponent';
 
 const data = {
 	bankname: 'UNION BANK OF INDIA',
@@ -88,6 +89,36 @@ const IRgeneration = () => {
       </html>
     `;
 
+	// handling calendar open and close
+	const [isStartCalendarOpen, setIsStartCalendarOpen] = useState(false);
+	const [isEndCalendarOpen, setIsEndCalendarOpen] = useState(false);
+
+	const handleOpenCalendarStart = () => {
+		setIsStartCalendarOpen(!isStartCalendarOpen);
+	};
+
+	const handleOpenCalendarEnd = () => {
+		setIsEndCalendarOpen(!isEndCalendarOpen);
+	};
+
+	const [selectedStartDate, setSelectedStartDate] = useState('');
+	const [selectedEndDate, setSelectedEndDate] = useState('');
+	const [startDate, setStartDate] = useState('');
+	const [endDate, setEndDate] = useState('');
+
+	// getting and formatting date from DateComponent
+	const getStartDate = (date) => {
+		const newDate = new Date(date.replaceAll('/', '-'));
+		setStartDate(newDate);
+		console.log('start date:', newDate);
+	};
+
+	const getEndDate = (date) => {
+		const newDate = new Date(date.replaceAll('/', '-'));
+		console.log('end date:', newDate);
+		setEndDate(newDate);
+	};
+
 	// get client details
 	const changeOrderList = (client) => {
 		setClient(client);
@@ -95,7 +126,7 @@ const IRgeneration = () => {
 
 	// get invoice details form db
 	const generatePDF = async () => {
-		fetch(`http:192.168.137.1:3000/api/v1/orders/invoice/${client.businessName}/2023-10-20/2023-10-31`)
+		fetch(`http:192.168.137.1:3000/api/v1/orders/invoice/${client.businessName}/${startDate}/${endDate}`)
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`);
@@ -117,6 +148,8 @@ const IRgeneration = () => {
 				base64: false,
 			});
 			await shareAsync(file.uri);
+		} else if (client.businessName && invoice.length == 0) {
+			Alert.alert('Validation Error', 'No orders found in these dates', [{ text: 'OK' }]);
 		}
 	};
 
@@ -131,6 +164,20 @@ const IRgeneration = () => {
 				<Text className="text-center">Invoice Generation</Text>
 			</View>
 			<DropDown changeOrderList={changeOrderList} />
+			<DateComponent isCalendarOpen={isStartCalendarOpen} setSelectedStartDate={setSelectedStartDate} handleOpenCalendar={handleOpenCalendarStart} setDate={getStartDate} />
+			<DateComponent isCalendarOpen={isEndCalendarOpen} setSelectedStartDate={setSelectedEndDate} handleOpenCalendar={handleOpenCalendarEnd} setDate={getEndDate} />
+			{/* date selections */}
+			<View className="mb-36 ml-10">
+				<Text className="">Start Date:</Text>
+				<TouchableOpacity className="border w-4/5 p-3" onPress={handleOpenCalendarStart}>
+					<Text>{selectedStartDate}</Text>
+				</TouchableOpacity>
+
+				<Text className="mt-4">End Date:</Text>
+				<TouchableOpacity className="border w-4/5 p-3 mt-2" onPress={handleOpenCalendarEnd}>
+					<Text>{selectedEndDate}</Text>
+				</TouchableOpacity>
+			</View>
 
 			<View className="justify-between items-center mb-28">
 				<View className="py-2 px-4 rounded">

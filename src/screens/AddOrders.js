@@ -22,7 +22,8 @@ export default AddOrders = ({ navigation }) => {
 	const [date, setDate] = useState('');
 	// getting and formatting date from DateComponent
 	const getDate = (date) => {
-		const newDate = new Date(date.replaceAll('/', '-'));
+		let newDate = new Date(date.replaceAll('/', '-'));
+		newDate = new Date(newDate.toISOString().replace('T00:00', 'T18:30'));
 		setDate(newDate);
 	};
 
@@ -64,7 +65,7 @@ export default AddOrders = ({ navigation }) => {
 	};
 
 	useEffect(() => {
-		if (formattedOrder.length == 0) {
+		if (formattedOrder.length == 0 && businessName) {
 			Alert.alert('Validation Error', 'No order added', [{ text: 'OK' }]);
 		}
 		setFormData({

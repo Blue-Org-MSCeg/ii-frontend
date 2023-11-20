@@ -1,4 +1,4 @@
-import { View, Text, Button, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Button, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import EditFoodComponent from '../components/EditFoodComponent';
 import EditerComponent from '../components/EditerComponent';
@@ -144,7 +144,7 @@ export default function MenuQuotation() {
 	};
 
 	return (
-		<View className="w-full">
+		<ScrollView className="w-full">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
 				<Text className="text-center">MenuQuotation</Text>
 			</View>
@@ -198,6 +198,6 @@ export default function MenuQuotation() {
 					<Button title="ADD" onPress={toggleAddFoodHandler} />
 				</View>
 			</TouchableOpacity>
-		</View>
+		</ScrollView>
 	);
 }

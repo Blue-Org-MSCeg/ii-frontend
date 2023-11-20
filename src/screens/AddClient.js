@@ -26,7 +26,7 @@ export default function AddClient({ navigation }) {
 				address: address,
 			};
 
-			fetch('http://192.168.61.152:3000/api/v1/clients/', {
+			fetch('http://10.11.48.118:3000/api/v1/clients/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

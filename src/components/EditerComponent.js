@@ -15,7 +15,7 @@ export default EditerComponent = ({ itemEdit, itemEditPass, setIsEditFoodOpen })
 	};
 
 	return (
-		<View className="justify-between mt-5 mb-10 border-b">
+		<View className="justify-between mt-5 mb-10 border-b" key={itemEdit}>
 			<View className="bg-gray-300 w-52 justify-center content-center p-3 mb-5 mx-20 ml-30">
 				<Text className="text-center ">Edit</Text>
 			</View>
