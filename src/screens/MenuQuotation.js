@@ -137,7 +137,7 @@ export default function MenuQuotation() {
 		})
 			.then((response) => response.json())
 			.then((data) => console.log('deleted successfully'))
-			.catch((err) => console.error(err));
+			.catch((err) => console.log(err));
 
 		const updatedMenuQuotation = menuQuotation.filter((menu) => menu._id !== item._id);
 		setMenuQuotation(updatedMenuQuotation);

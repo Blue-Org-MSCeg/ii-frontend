@@ -26,7 +26,7 @@ export default function AddClient({ navigation }) {
 				address: address,
 			};
 
-			fetch('http://10.11.48.118:3000/api/v1/clients/', {
+			fetch('http://192.168.137.1:3000/api/v1/clients/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -39,7 +39,8 @@ export default function AddClient({ navigation }) {
 				.then((data) => {
 					// Handle the parsed JSON data here
 					console.log(data);
-					navigation.navigate('ViewClients');
+					Alert.alert('Success', 'Client successfully added', [{ text: 'OK' }]);
+					navigation.navigate('Home');
 				})
 				.catch((err) => {
 					// Handle errors, including the JSON parsing error

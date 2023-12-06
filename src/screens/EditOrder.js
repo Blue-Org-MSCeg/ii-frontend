@@ -90,7 +90,7 @@ export default function EditOrder() {
 		console.log(newDate);
 	};
 	return (
-		<View className="flex-1 bg-white-500">
+		<ScrollView className="flex-1 bg-white-500">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
 				<Text className="text-center">Edit Orders</Text>
 			</View>
@@ -114,6 +114,6 @@ export default function EditOrder() {
 					))}
 				</View>
 			</View>
-		</View>
+		</ScrollView>
 	);
 }

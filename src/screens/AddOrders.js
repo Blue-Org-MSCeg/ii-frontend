@@ -86,12 +86,14 @@ export default AddOrders = ({ navigation }) => {
 				.then((response) => response.json())
 				.then((data) => console.log(data))
 				.catch((err) => console.log(err));
+
+			Alert.alert('Success', 'Order added successfully', [{ text: 'OK' }]);
 			navigation.navigate('Home');
 		}
 	}, [formData]);
 
 	return (
-		<View>
+		<ScrollView>
 			<Head />
 			<Text className="text-lg text-center">Add Orders</Text>
 			<View>
@@ -112,11 +114,11 @@ export default AddOrders = ({ navigation }) => {
 							<MenuComponent menuItem={menuItem} handleInputChange={handleInputChange} />
 						))}
 					</View>
-					<TouchableOpacity className="bg-blue-400 w-20 p-2 rounded-md mt-3" onPress={handleSubmit}>
+					<TouchableOpacity className="bg-blue-400 w-20 p-2 rounded-md my-3" onPress={handleSubmit}>
 						<Text className="text-center text-white">submit</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
-		</View>
+		</ScrollView>
 	);
 };

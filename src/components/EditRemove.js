@@ -30,14 +30,14 @@ export default EditRemove = ({ item, updateOrder, deleteOrder }) => {
 			<Text className="text-2xl font-normal">{item.foodItem}</Text>
 			{isEditing ? (
 				<View className="flex-row items-center justify-center">
-					<TextInput value={newQuantity} onChangeText={(text) => setNewQuantity(text)} keyboardType="numeric" className="border rounded-md px-3 py-1 mr-3" />
+					<TextInput value={newQuantity} onChangeText={(text) => setNewQuantity(text)} keyboardType="numeric" className="border rounded-md px-3 py-1 mr-3 w-14 text-center" />
 					<TouchableOpacity onPress={updateQuantity}>
-						<Text className="bg-blue-400 w-15 p-1 rounded-md mt-2 mr-10 items-center">Save</Text>
+						<Text className="bg-blue-400 w-14 text-center text-white p-1 rounded-md mt-2 mr-10 items-center">Save</Text>
 					</TouchableOpacity>
 				</View>
 			) : (
 				<View className="flex flex-row items-center justify-center">
-					<Text className="text-lg mr-2 border px-3 rounded-md">{item.numberOfHeads}</Text>
+					<Text className="text-lg w-16 text-center mr-2 border px-3 rounded-md">{item.numberOfHeads}</Text>
 					<TouchableOpacity onPress={handleEdit}>
 						<Text className="bg-green-400 w-15 p-1 rounded-md items-center px-3 py-1 ">Edit</Text>
 					</TouchableOpacity>

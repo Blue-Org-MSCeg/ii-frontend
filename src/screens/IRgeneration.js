@@ -41,17 +41,17 @@ const IRgeneration = () => {
                   ${data.hssonno.padEnd(31)}
                 </pre>
               </div>
-              <div class="flex-1 bg-green-200 p-4 text-center">
+              <div class="flex-1 p-4 text-center">
                 <h3>INVOICE</h3>
               </div>
               <!-- Left-aligned Flex Item -->
-              <div class="flex-1 bg-blue-200 p-4">
+              <div class="flex-1 p-4">
                 ${client.businessName}<br>
                 ${client.address ? client.address.split(',').join('<br>') : ''}
               </div>
     
               <!-- Center-aligned Flex Item -->
-              <div class="flex-1 bg-green-200 p-4 text-center">
+              <div class="flex-1 p-4 text-center">
                 <table class="w-full mt-4">
                   <thead>
                     <tr>
@@ -62,7 +62,7 @@ const IRgeneration = () => {
                       <th class="border">Amount</th>
                     </tr>
                   </thead>
-                  <tbody>;
+                  <tbody>
                     ${invoice
 											.map((item, index) => {
 												totalAmount += item.amount;
@@ -78,7 +78,11 @@ const IRgeneration = () => {
                   </tbody>
                 </table>
                 <div className="mt-4">
-                  <strong>Total Amount:</strong> ${totalAmount}
+								<strong>Total Amount:</strong> ${totalAmount}
+								<br>
+									<strong>GST@2.5:</strong> ${totalAmount * 0.025}
+									<br>
+									<strong>Grand Total:</strong> ${totalAmount * 0.025 + totalAmount}
                 </div>
               </div>
                </tbody>
@@ -184,9 +188,9 @@ const IRgeneration = () => {
 					<Button title="Generate Invoice" onPress={generatePDF} />
 				</View>
 				<View className="w-4" />
-				<View className="py-2 px-4 rounded">
+				{/* <View className="py-2 px-4 rounded">
 					<Button title="Generate Report Sheet" />
-				</View>
+				</View> */}
 			</View>
 		</View>
 	);
