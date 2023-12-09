@@ -1,7 +1,7 @@
 import { TouchableOpacity, View, Text, ScrollView } from 'react-native';
 import Head from '../components/Head';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import menu from './../../constants';
+import menu from '../constants/constants';
 
 export default function HomeScreen({ navigation }) {
 	return (
