@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, Button, TextInput, Alert } from 'react-native';
 import React, { useState } from 'react';
+import { API_URL } from '@env';
 
 import PhoneComponent from '../components/PhoneComponent';
 import Head from '../components/Head';
@@ -26,7 +27,7 @@ export default function AddClient({ navigation }) {
 				address: address,
 			};
 
-			fetch('http://192.168.137.1:3000/api/v1/clients/', {
+			fetch(`${API_URL}/clients/`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

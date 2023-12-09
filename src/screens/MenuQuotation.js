@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import EditFoodComponent from '../components/EditFoodComponent';
 import EditerComponent from '../components/EditerComponent';
 import DropDown from '../components/DropDown';
+import { API_URL } from '@env';
 
 export default function MenuQuotation() {
 	const [cost, setCost] = useState('');
@@ -52,7 +53,7 @@ export default function MenuQuotation() {
 
 	// posting the food to the db when submit button is pressed
 	useEffect(() => {
-		fetch(`http://192.168.137.1:3000/api/v1/clients/quotation/${client._id}`, {
+		fetch(`${API_URL}/clients/quotation/${client._id}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
@@ -100,7 +101,7 @@ export default function MenuQuotation() {
 		console.log(Object.keys(editFormData));
 		if (Object.keys(editFormData).length !== 0) {
 			console.log('formData changed');
-			fetch(`http://192.168.137.1:3000/api/v1/clients/quotation/${client._id}`, {
+			fetch(`${API_URL}/clients/quotation/${client._id}`, {
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
@@ -129,7 +130,7 @@ export default function MenuQuotation() {
 	// delete item from client's menu quotation
 	const deleteItem = (item) => {
 		console.log('delete:', item);
-		fetch(`http://192.168.137.1:3000/api/v1/clients/quotation/${client._id}/${item._id}`, {
+		fetch(`${API_URL}/clients/quotation/${client._id}/${item._id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
