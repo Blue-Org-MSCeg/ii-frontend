@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import DropDown from '../components/DropDown';
 import DateComponent from '../components/DateComponent';
 import EditRemove from '../components/EditRemove';
+import { API_URL } from '@env';
 
 export default function EditOrder() {
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -18,7 +19,7 @@ export default function EditOrder() {
 
 	useEffect(() => {
 		if (date !== '') {
-			fetch(`http://192.168.137.1:3000/api/v1/orders/${client.businessName}/${date}`, {
+			fetch(`${API_URL}/orders/${client.businessName}/${date}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -41,7 +42,7 @@ export default function EditOrder() {
 	}, [date]);
 
 	const updateOrder = (updatedOrder) => {
-		fetch(`http://192.168.137.1:3000/api/v1/orders/order/${orderId}`, {
+		fetch(`${API_URL}/orders/order/${orderId}`, {
 			method: 'PATCH',
 			headers: {
 				'Content-type': 'application/json',
@@ -63,7 +64,7 @@ export default function EditOrder() {
 	};
 
 	const deleteOrder = (orderToBeDeleted) => {
-		fetch(`http://192.168.137.1:3000/api/v1/orders/order/remove/${orderId}`, {
+		fetch(`${API_URL}/orders/order/remove/${orderId}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',

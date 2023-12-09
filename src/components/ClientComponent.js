@@ -1,10 +1,11 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Button, TouchableOpacity } from 'react-native';
 import { Text, View } from 'react-native';
+import { API_URL } from '@env';
 
 export default function ClientComponent(props) {
 	const deleteClient = (id) => {
-		fetch(`http://192.168.137.1:3000/api/v1/clients/${id}`, {
+		fetch(`${API_URL}/clients/${id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',

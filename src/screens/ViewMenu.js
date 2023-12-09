@@ -2,6 +2,7 @@ import { View, Text, Button, TouchableOpacity, TextInput, Alert } from 'react-na
 import React, { useEffect, useState } from 'react';
 import EditFoodComponent from '../components/EditFoodComponent';
 import EditerComponent from '../components/EditerComponent';
+import { API_URL } from '@env';
 
 export default function ViewMenu() {
 	const [menuItem, setMenuItem] = useState([]);
@@ -15,8 +16,9 @@ export default function ViewMenu() {
 	const [isAddFoodOpen, setIsAddFoodOpen] = useState(true);
 	const [isEditFoodOpen, setIsEditFoodOpen] = useState(false);
 
+	// fetching menu form database
 	useEffect(() => {
-		fetch('http://192.168.137.1:3000/api/v1/menus/')
+		fetch(`${API_URL}/menus/`)
 			.then((response) => response.json())
 			.then((res) => setMenuItem(res.data.menu))
 			.catch((err) => console.log(err));
@@ -58,7 +60,7 @@ export default function ViewMenu() {
 
 	// posting the food to the db when submit button is pressed
 	useEffect(() => {
-		fetch('http://192.168.137.1:3000/api/v1/menus/', {
+		fetch(`${API_URL}/menus/`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -102,7 +104,7 @@ export default function ViewMenu() {
 		console.log(Object.keys(editFormData));
 		if (Object.keys(editFormData).length !== 0) {
 			console.log('formData changed');
-			fetch(`http://192.168.137.1:3000/api/v1/menus/${editFormData._id}`, {
+			fetch(`${API_URL}/menus/${editFormData._id}`, {
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
@@ -131,7 +133,7 @@ export default function ViewMenu() {
 	// remove food from menu
 	const deleteMenuItem = (item) => {
 		console.log('delete:', item);
-		fetch(`http://192.168.137.1:3000/api/v1/menus/${item._id}`, {
+		fetch(`${API_URL}/menus/${item._id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',

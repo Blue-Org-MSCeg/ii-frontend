@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import DateComponent from '../components/DateComponent';
 import MenuComponent from './../components/MenuComponent';
 import DropDown from '../components/DropDown';
+import { API_URL } from '@env';
 
 export default AddOrders = ({ navigation }) => {
 	// setting the form data
@@ -78,7 +79,7 @@ export default AddOrders = ({ navigation }) => {
 	useEffect(() => {
 		console.log(formData);
 		if (formData.orders.length !== 0) {
-			fetch('http://192.168.137.1:3000/api/v1/orders/', {
+			fetch(`${API_URL}/orders/`, {
 				method: 'POST',
 				headers: { 'Content-type': 'application/json' },
 				body: JSON.stringify(formData),

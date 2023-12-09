@@ -2,6 +2,19 @@ module.exports = function (api) {
 	api.cache(true);
 	return {
 		presets: ['babel-preset-expo'],
-		plugins: ['nativewind/babel', '@babel/plugin-proposal-export-namespace-from', 'react-native-reanimated/plugin', 'macros'],
+		plugins: [
+			'nativewind/babel',
+			'@babel/plugin-proposal-export-namespace-from',
+			'react-native-reanimated/plugin',
+			'macros',
+			[
+				'module:react-native-dotenv',
+				{
+					envName: 'APP_ENV',
+					moduleName: '@env',
+					path: '.env',
+				},
+			],
+		],
 	};
 };
