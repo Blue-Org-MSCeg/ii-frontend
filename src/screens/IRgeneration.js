@@ -6,6 +6,8 @@ import { shareAsync } from 'expo-sharing';
 import { printToFileAsync } from 'expo-print';
 import { useEffect, useState } from 'react';
 import DateComponent from '../components/DateComponent';
+import XLSX from 'xlsx';
+import * as FileSystem from 'expo-file-system';
 
 const data = {
 	bankname: 'UNION BANK OF INDIA',
@@ -163,6 +165,36 @@ const IRgeneration = () => {
 		generateAndSharePDF();
 	}, [invoice]);
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// excel
+
+	const insertDataIntoExcel = async () => {
+		// Sample data
+		const data = [
+			['Name', 'Age', 'City'],
+			['John', 25, 'New York'],
+			['Jane', 30, 'San Francisco'],
+		];
+
+		// Create a worksheet
+		const ws = XLSX.utils.aoa_to_sheet(data);
+
+		// Create a workbook
+		const wb = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+		// Generate a binary Excel file
+		const base64 = XLSX.write(wb, { type: 'base64' });
+
+		const fileName = FileSystem.documentDirectory + 'MyExcel.xlsx';
+		FileSystem.writeAsStringAsync(fileName, base64, {
+			encoding: FileSystem.EncodingType.Base64,
+		}).then(() => {
+			shareAsync(fileName);
+		});
+	};
+
 	return (
 		<View className="flex-1">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
@@ -189,9 +221,9 @@ const IRgeneration = () => {
 					<Button title="Generate Invoice" onPress={generatePDF} />
 				</View>
 				<View className="w-4" />
-				{/* <View className="py-2 px-4 rounded">
-					<Button title="Generate Report Sheet" />
-				</View> */}
+				<View className="py-2 px-4 rounded">
+					<Button title="Generate Report Sheet" onPress={insertDataIntoExcel} />
+				</View>
 			</View>
 		</View>
 	);
