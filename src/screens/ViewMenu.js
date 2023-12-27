@@ -157,10 +157,10 @@ export default function ViewMenu() {
 			{isAddFoodOpen && (
 				<View className="align-middle justify-center content-centers flex border-b mb-5">
 					<View className="flex-row flex-2 p-15">
-						<View className=" bg-gray-300 w-7/12 p-2 ml-10 ">
+						<View className=" bg-gray-300 rounded w-7/12 p-2 ml-10 ">
 							<TextInput onChangeText={changeFood} maxLength={40} placeholder="food item" />
 						</View>
-						<View className="bg-gray-300  p-2 mr-10 ml-6 ">
+						<View className="bg-gray-300 rounded p-2 mr-10 ml-6 ">
 							<TextInput onChangeText={changeCost} className="" placeholder="cost" keyboardType="numeric" />
 						</View>
 					</View>
@@ -194,7 +194,7 @@ export default function ViewMenu() {
 				))}
 			</View>
 			<TouchableOpacity>
-				<View className="w-20 justify-between p-1 rounded-md mt-10">
+				<View className="w-20 justify-between p-1 rounded-md mt-10 ml-5">
 					<Button title="ADD" onPress={toggleAddFoodHandler} />
 				</View>
 			</TouchableOpacity>

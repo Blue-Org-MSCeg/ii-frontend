@@ -169,14 +169,7 @@ const IRgeneration = () => {
 
 	// excel
 
-	const insertDataIntoExcel = async () => {
-		// Sample data
-		const data = [
-			['Name', 'Age', 'City'],
-			['John', 25, 'New York'],
-			['Jane', 30, 'San Francisco'],
-		];
-
+	const insertDataIntoExcel = async (data) => {
 		// Create a worksheet
 		const ws = XLSX.utils.aoa_to_sheet(data);
 
@@ -193,6 +186,30 @@ const IRgeneration = () => {
 		}).then(() => {
 			shareAsync(fileName);
 		});
+	};
+
+	const fetchReportSheetDetails = () => {
+		fetch(`${API_URL}/orders/reportSheet/${client.businessName}/${startDate}/${endDate}`)
+			.then((response) => response.json())
+			.then((data) => {
+				let rs = data.data.reportSheet;
+				// console.log(rs);
+				let mainArray = [];
+				rs.forEach((ele) => {
+					let subArray = [];
+					let foodOrder = ['breakfast', 'lunch', 'dinner', 'special food'];
+
+					subArray = foodOrder.map((item) => ele.orders.reduce((acc, order) => (order.foodItem === item ? acc + order.numberOfHeads : acc), 0));
+					subArray.unshift(ele.orderDate);
+					mainArray.push(subArray);
+					// console.log(subArray);
+				});
+				// console.log(mainArray);
+				insertDataIntoExcel(mainArray);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	return (
@@ -222,7 +239,7 @@ const IRgeneration = () => {
 				</View>
 				<View className="w-4" />
 				<View className="py-2 px-4 rounded">
-					<Button title="Generate Report Sheet" onPress={insertDataIntoExcel} />
+					<Button title="Generate Report Sheet" onPress={fetchReportSheetDetails} />
 				</View>
 			</View>
 		</View>
