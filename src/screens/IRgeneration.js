@@ -169,18 +169,38 @@ const IRgeneration = () => {
 
 	// excel
 
-	const insertDataIntoExcel = async () => {
-		// Sample data
-		const data = [
-			['Name', 'Age', 'City'],
-			['John', 25, 'New York'],
-			['Jane', 30, 'San Francisco'],
-		];
-
+	const insertDataIntoExcel = async (data) => {
 		// Create a worksheet
 		const ws = XLSX.utils.aoa_to_sheet(data);
 
+		// // Set the style for all cells with centered text
+		// const style = {
+		// 	alignment: {
+		// 		horizontal: 'center',
+		// 		vertical: 'center',
+		// 	},
+		// };
+
+		// // Get the range of cells in the worksheet
+		// const range = XLSX.utils.decode_range(ws['!ref']);
+
+		// // Loop through each cell in the range and apply the style
+		// for (let R = range.s.r; R <= range.e.r; ++R) {
+		// 	for (let C = range.s.c; C <= range.e.c; ++C) {
+		// 		const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+
+		// 		// Ensure the cell is initialized
+		// 		if (!ws[cellAddress]) {
+		// 			ws[cellAddress] = { t: 's', v: '' }; // You can set the initial value as needed
+		// 		}
+
+		// 		// Apply the style to the cell
+		// 		ws[cellAddress].s = style;
+		// 	}
+		// }
+
 		// Create a workbook
+
 		const wb = XLSX.utils.book_new();
 		XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
@@ -193,6 +213,30 @@ const IRgeneration = () => {
 		}).then(() => {
 			shareAsync(fileName);
 		});
+	};
+
+	const fetchReportSheetDetails = () => {
+		fetch(`${API_URL}/orders/reportSheet/${client.businessName}/${startDate}/${endDate}`)
+			.then((response) => response.json())
+			.then((data) => {
+				let rs = data.data.reportSheet;
+				// console.log(rs);
+				let mainArray = [['DATE', 'BREAKFAST', 'COFFEE', 'LUNCH', 'TEA', 'BUTTERMILK', 'DINNER', 'SPECIAL MEAL', 'SNACKS', 'TEA', 'CHICKEN', 'EGG', 'HR.SIGN']];
+				rs.forEach((ele) => {
+					let subArray = [];
+					let foodOrder = ['breakfast', 'coffee', 'lunch', 'tea', 'buttermilk', 'dinner', 'special food', 'snacks', 'tea', 'chicken', 'egg'];
+
+					subArray = foodOrder.map((item) => ele.orders.reduce((acc, order) => (order.foodItem === item ? acc + order.numberOfHeads : '-'), 0));
+					subArray.unshift(ele.orderDate);
+					mainArray.push(subArray);
+					// console.log(subArray);
+				});
+				// console.log(mainArray);
+				insertDataIntoExcel(mainArray);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	return (
@@ -222,7 +266,7 @@ const IRgeneration = () => {
 				</View>
 				<View className="w-4" />
 				<View className="py-2 px-4 rounded">
-					<Button title="Generate Report Sheet" onPress={insertDataIntoExcel} />
+					<Button title="Generate Report Sheet" onPress={fetchReportSheetDetails} />
 				</View>
 			</View>
 		</View>
