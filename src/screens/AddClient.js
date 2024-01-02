@@ -35,6 +35,10 @@ export default function AddClient({ navigation }) {
 				body: JSON.stringify(formData),
 			})
 				.then((response) => {
+					if (!response.ok) {
+						console.log(response.json());
+						throw new Error(`Http error! Status: ${response.status}`);
+					}
 					return response.json(); // Parse JSON if the content type is JSON
 				})
 				.then((data) => {
@@ -45,7 +49,8 @@ export default function AddClient({ navigation }) {
 				})
 				.catch((err) => {
 					// Handle errors, including the JSON parsing error
-					console.log(err);
+					Alert.alert('Error', 'Unable to add client', [{ text: 'OK' }]);
+					console.log(err.message);
 				});
 		}
 	};
@@ -97,6 +102,11 @@ export default function AddClient({ navigation }) {
 
 		if (!address) {
 			showAlert('Address cannot be empty');
+			return false;
+		}
+
+		if (address.length < 10) {
+			showAlert('Address length should be greater than 9');
 			return false;
 		}
 
