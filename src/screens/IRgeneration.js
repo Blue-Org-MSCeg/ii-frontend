@@ -1,5 +1,4 @@
 import { View, Button, Text, TouchableOpacity, Alert } from 'react-native';
-import { API_URL } from '@env';
 
 import DropDown from '../components/DropDown';
 import { shareAsync } from 'expo-sharing';
@@ -133,7 +132,7 @@ const IRgeneration = () => {
 
 	// get invoice details form db
 	const generatePDF = async () => {
-		fetch(`${API_URL}/orders/invoice/${client.businessName}/${startDate}/${endDate}`)
+		fetch(`${process.env.EXPO_PUBLIC_API_URL}/orders/invoice/${client.businessName}/${startDate}/${endDate}`)
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`);
@@ -216,7 +215,7 @@ const IRgeneration = () => {
 	};
 
 	const fetchReportSheetDetails = () => {
-		fetch(`${API_URL}/orders/reportSheet/${client.businessName}/${startDate}/${endDate}`)
+		fetch(`${process.env.EXPO_PUBLIC_API_URL}/orders/reportSheet/${client.businessName}/${startDate}/${endDate}`)
 			.then((response) => response.json())
 			.then((data) => {
 				let rs = data.data.reportSheet;

@@ -7,7 +7,7 @@ export default function HomeScreen({ navigation }) {
 	return (
 		<ScrollView>
 			<Head />
-			<View className="w-full flex flex-row items-center flex-wrap content-start mt-4 ">
+			<View className="w-screen flex flex-row justify-center items-center flex-wrap  mt-4">
 				{menu.map((item) => (
 					<TouchableOpacity key={item.id} className="bg-gray-300 p-4 m-6 w-32 h-32 justify-items-center items-center justify-end rounded-md" onPress={() => navigation.navigate(item.to)}>
 						<FontAwesome name={item.icon} size={32} />

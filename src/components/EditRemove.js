@@ -27,7 +27,7 @@ export default EditRemove = ({ item, updateOrder, deleteOrder }) => {
 
 	return (
 		<View className="flex-row justify-between items-center px-3 py-2 border-b" key={item._id}>
-			<Text className="text-2xl font-normal">{item.foodItem}</Text>
+			<Text className="text-xl font-normal">{item.foodItem}</Text>
 			{isEditing ? (
 				<View className="flex-row items-center justify-center">
 					<TextInput value={newQuantity} onChangeText={(text) => setNewQuantity(text)} keyboardType="numeric" className="border rounded-md px-3 py-1 mr-3 w-14 text-center" />

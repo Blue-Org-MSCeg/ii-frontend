@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import DropDown from '../components/DropDown';
 import DateComponent from '../components/DateComponent';
 import EditRemove from '../components/EditRemove';
-import { API_URL } from '@env';
 
 export default function EditOrder() {
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -19,7 +18,7 @@ export default function EditOrder() {
 
 	useEffect(() => {
 		if (date !== '') {
-			fetch(`${API_URL}/orders/${client.businessName}/${date}`, {
+			fetch(`${process.env.EXPO_PUBLIC_API_URL}/orders/${client.businessName}/${date}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -42,7 +41,7 @@ export default function EditOrder() {
 	}, [date]);
 
 	const updateOrder = (updatedOrder) => {
-		fetch(`${API_URL}/orders/order/${orderId}`, {
+		fetch(`${process.env.EXPO_PUBLIC_API_URL}/orders/order/${orderId}`, {
 			method: 'PATCH',
 			headers: {
 				'Content-type': 'application/json',
@@ -64,7 +63,7 @@ export default function EditOrder() {
 	};
 
 	const deleteOrder = (orderToBeDeleted) => {
-		fetch(`${API_URL}/orders/order/remove/${orderId}`, {
+		fetch(`${process.env.EXPO_PUBLIC_API_URL}/orders/order/remove/${orderId}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
@@ -91,7 +90,7 @@ export default function EditOrder() {
 		console.log(newDate);
 	};
 	return (
-		<ScrollView className="flex-1 bg-white-500">
+		<View className="flex-1 bg-white-500">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
 				<Text className="text-center">Edit Orders</Text>
 			</View>
@@ -110,11 +109,13 @@ export default function EditOrder() {
 						<Text className="text-lg">Item</Text>
 						<Text className="text-lg">Quantity</Text>
 					</View>
-					{order.map((menuItem, index) => (
-						<EditRemove key={index} item={menuItem} updateOrder={updateOrder} deleteOrder={deleteOrder} />
-					))}
+					<ScrollView className="h-72">
+						{order.map((menuItem, index) => (
+							<EditRemove key={index} item={menuItem} updateOrder={updateOrder} deleteOrder={deleteOrder} />
+						))}
+					</ScrollView>
 				</View>
 			</View>
-		</ScrollView>
+		</View>
 	);
 }

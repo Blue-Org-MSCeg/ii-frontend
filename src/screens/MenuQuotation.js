@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import EditFoodComponent from '../components/EditFoodComponent';
 import EditerComponent from '../components/EditerComponent';
 import DropDown from '../components/DropDown';
-import { API_URL } from '@env';
 
 export default function MenuQuotation() {
 	const [cost, setCost] = useState('');
@@ -53,7 +52,7 @@ export default function MenuQuotation() {
 
 	// posting the food to the db when submit button is pressed
 	useEffect(() => {
-		fetch(`${API_URL}/clients/quotation/${client._id}`, {
+		fetch(`${process.env.EXPO_PUBLIC_API_URL}/clients/quotation/${client._id}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
@@ -101,7 +100,7 @@ export default function MenuQuotation() {
 		console.log(Object.keys(editFormData));
 		if (Object.keys(editFormData).length !== 0) {
 			console.log('formData changed');
-			fetch(`${API_URL}/clients/quotation/${client._id}`, {
+			fetch(`${process.env.EXPO_PUBLIC_API_URL}/clients/quotation/${client._id}`, {
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
@@ -130,7 +129,7 @@ export default function MenuQuotation() {
 	// delete item from client's menu quotation
 	const deleteItem = (item) => {
 		console.log('delete:', item);
-		fetch(`${API_URL}/clients/quotation/${client._id}/${item._id}`, {
+		fetch(`${process.env.EXPO_PUBLIC_API_URL}/clients/quotation/${client._id}/${item._id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
@@ -145,7 +144,7 @@ export default function MenuQuotation() {
 	};
 
 	return (
-		<ScrollView className="w-full">
+		<View className="w-full">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
 				<Text className="text-center">MenuQuotation</Text>
 			</View>
@@ -189,9 +188,11 @@ export default function MenuQuotation() {
 						<Text className="p-2 m-1 w-20 left-5 font-bold">Cost</Text>
 					</View>
 				</View>
-				{menuQuotation.map((item) => (
-					<EditFoodComponent item={item} setIsEditFoodOpen={setIsEditFoodOpen} editorPass={editorPass} deleteItem={deleteItem} />
-				))}
+				<ScrollView className="h-72">
+					{menuQuotation.map((item) => (
+						<EditFoodComponent key={item._id} item={item} setIsEditFoodOpen={setIsEditFoodOpen} editorPass={editorPass} deleteItem={deleteItem} />
+					))}
+				</ScrollView>
 			</View>
 
 			<TouchableOpacity>
@@ -199,6 +200,6 @@ export default function MenuQuotation() {
 					<Button title="ADD" onPress={toggleAddFoodHandler} />
 				</View>
 			</TouchableOpacity>
-		</ScrollView>
+		</View>
 	);
 }

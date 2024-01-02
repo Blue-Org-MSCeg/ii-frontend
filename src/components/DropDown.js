@@ -1,7 +1,6 @@
 import { View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { API_URL } from '@env';
 
 const DropDown = (props) => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +9,7 @@ const DropDown = (props) => {
 	const [clientList, setClientList] = useState([]);
 
 	useEffect(() => {
-		fetch(`${API_URL}/clients/`)
+		fetch(`${process.env.EXPO_PUBLIC_API_URL}/clients/`)
 			.then((response) => response.json())
 			.then((res) => setClients(res.data.clients))
 			.catch((err) => console.log(err));

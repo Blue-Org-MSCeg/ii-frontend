@@ -2,8 +2,6 @@ import { View, Text, Button, TouchableOpacity, TextInput, Alert } from 'react-na
 import React, { useEffect, useState } from 'react';
 import EditFoodComponent from '../components/EditFoodComponent';
 import EditerComponent from '../components/EditerComponent';
-import { API_URL } from '@env';
-
 export default function ViewMenu() {
 	const [menuItem, setMenuItem] = useState([]);
 
@@ -18,7 +16,7 @@ export default function ViewMenu() {
 
 	// fetching menu form database
 	useEffect(() => {
-		fetch(`${API_URL}/menus/`)
+		fetch(`${process.env.EXPO_PUBLIC_API_URL}/menus/`)
 			.then((response) => response.json())
 			.then((res) => setMenuItem(res.data.menu))
 			.catch((err) => console.log(err));
@@ -60,7 +58,7 @@ export default function ViewMenu() {
 
 	// posting the food to the db when submit button is pressed
 	useEffect(() => {
-		fetch(`${API_URL}/menus/`, {
+		fetch(`${process.env.EXPO_PUBLIC_API_URL}/menus/`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -104,7 +102,7 @@ export default function ViewMenu() {
 		console.log(Object.keys(editFormData));
 		if (Object.keys(editFormData).length !== 0) {
 			console.log('formData changed');
-			fetch(`${API_URL}/menus/${editFormData._id}`, {
+			fetch(`${process.env.EXPO_PUBLIC_API_URL}/menus/${editFormData._id}`, {
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
@@ -133,7 +131,7 @@ export default function ViewMenu() {
 	// remove food from menu
 	const deleteMenuItem = (item) => {
 		console.log('delete:', item);
-		fetch(`${API_URL}/menus/${item._id}`, {
+		fetch(`${process.env.EXPO_PUBLIC_API_URL}/menus/${item._id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
@@ -190,7 +188,7 @@ export default function ViewMenu() {
 					</View>
 				</View>
 				{menuItem.map((item) => (
-					<EditFoodComponent item={item} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={menuItem} editorPass={editorPass} deleteItem={deleteMenuItem} />
+					<EditFoodComponent key={item._id} item={item} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={menuItem} editorPass={editorPass} deleteItem={deleteMenuItem} />
 				))}
 			</View>
 			<TouchableOpacity>
