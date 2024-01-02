@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import DateComponent from '../components/DateComponent';
 import MenuComponent from './../components/MenuComponent';
 import DropDown from '../components/DropDown';
-import { API_URL } from '@env';
 
 export default AddOrders = ({ navigation }) => {
 	// setting the form data
@@ -79,7 +78,7 @@ export default AddOrders = ({ navigation }) => {
 	useEffect(() => {
 		console.log(formData);
 		if (formData.orders.length !== 0) {
-			fetch(`${API_URL}/orders/`, {
+			fetch(`${process.env.EXPO_PUBLIC_API_URL}/orders/`, {
 				method: 'POST',
 				headers: { 'Content-type': 'application/json' },
 				body: JSON.stringify(formData),
@@ -94,7 +93,7 @@ export default AddOrders = ({ navigation }) => {
 	}, [formData]);
 
 	return (
-		<ScrollView>
+		<View>
 			<Head />
 			<Text className="text-lg text-center">Add Orders</Text>
 			<View>
@@ -111,15 +110,17 @@ export default AddOrders = ({ navigation }) => {
 							<Text className="text-lg">Item</Text>
 							<Text className="text-lg">Quantity</Text>
 						</View>
-						{menuQuotation.map((menuItem) => (
-							<MenuComponent menuItem={menuItem} handleInputChange={handleInputChange} />
-						))}
+						<ScrollView className="h-72">
+							{menuQuotation.map((menuItem) => (
+								<MenuComponent menuItem={menuItem} handleInputChange={handleInputChange} key={menuItem._id} />
+							))}
+						</ScrollView>
 					</View>
 					<TouchableOpacity className="bg-blue-400 w-20 p-2 rounded-md my-3" onPress={handleSubmit}>
 						<Text className="text-center text-white">submit</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
-		</ScrollView>
+		</View>
 	);
 };
