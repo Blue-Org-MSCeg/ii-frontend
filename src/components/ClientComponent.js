@@ -9,7 +9,9 @@ export default function ClientComponent(props) {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-		});
+		})
+			.then((response) => response.json())
+			.then(() => Alert.alert('Success', 'Client removed successfully', [{ text: 'OK' }]));
 
 		props.handleDelete(id);
 	};

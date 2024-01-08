@@ -1,4 +1,4 @@
-import { View, Text, Button, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, Text, Button, TouchableOpacity, TextInput, Alert, ScrollView, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import EditFoodComponent from '../components/EditFoodComponent';
 import EditerComponent from '../components/EditerComponent';
@@ -13,12 +13,16 @@ export default function ViewMenu() {
 	const [editedItem, setEditedItem] = useState({});
 	const [isAddFoodOpen, setIsAddFoodOpen] = useState(true);
 	const [isEditFoodOpen, setIsEditFoodOpen] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
-	// fetching menu form database
+	// fetching menu from database
 	useEffect(() => {
 		fetch(`${process.env.EXPO_PUBLIC_API_URL}/menus/`)
 			.then((response) => response.json())
-			.then((res) => setMenuItem(res.data.menu))
+			.then((res) => {
+				setMenuItem(res.data.menu);
+				setIsLoading(false);
+			})
 			.catch((err) => console.log(err));
 	}, [formData]);
 
@@ -66,7 +70,7 @@ export default function ViewMenu() {
 			body: JSON.stringify(formData),
 		})
 			.then((response) => response.json())
-			.then((data) => console.log(data))
+			.then((data) => setMenuItem((current) => [...current, data.data.food]))
 			.catch((err) => console.log(err));
 
 		toggleAddFoodHandler();
@@ -138,11 +142,29 @@ export default function ViewMenu() {
 			},
 		})
 			.then((response) => response.json())
-			.then((data) => console.log('deleted successfully'))
+			.then((data) => Alert.alert('Success', 'Food item deleted successfully', [{ text: 'OK' }]))
 			.catch((err) => console.error(err));
 
 		const updatedMenu = menuItem.filter((menu) => menu._id !== item._id);
 		setMenuItem(updatedMenu);
+	};
+
+	const loadMenu = () => {
+		if (isLoading) {
+			return <ActivityIndicator className="mt-7" size="large" color="#65B741" />;
+		}
+
+		if (menuItem.length === 0) {
+			return <Text className="text-base mt-4 bg-white w-11/12 p-2">🧧No menu found. Click on add menu</Text>;
+		}
+
+		return (
+			<ScrollView className="h-72">
+				{menuItem.map((item) => (
+					<EditFoodComponent key={item._id} item={item} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={menuItem} editorPass={editorPass} deleteItem={deleteMenuItem} />
+				))}
+			</ScrollView>
+		);
 	};
 
 	return (
@@ -187,9 +209,10 @@ export default function ViewMenu() {
 						<Text className="p-2 m-1 w-20 left-5 font-bold">Cost</Text>
 					</View>
 				</View>
-				{menuItem.map((item) => (
+				{/* {menuItem.map((item) => (
 					<EditFoodComponent key={item._id} item={item} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={menuItem} editorPass={editorPass} deleteItem={deleteMenuItem} />
-				))}
+				))} */}
+				{loadMenu()}
 			</View>
 			<TouchableOpacity>
 				<View className="w-20 justify-between p-1 rounded-md mt-10 ml-5">

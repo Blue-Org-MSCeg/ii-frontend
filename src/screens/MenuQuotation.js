@@ -1,4 +1,4 @@
-import { View, Text, Button, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { View, Text, Button, TouchableOpacity, TextInput, ScrollView, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import EditFoodComponent from '../components/EditFoodComponent';
 import EditerComponent from '../components/EditerComponent';
@@ -15,6 +15,7 @@ export default function MenuQuotation() {
 	const [isAddFoodOpen, setIsAddFoodOpen] = useState(true);
 	const [isEditFoodOpen, setIsEditFoodOpen] = useState(false);
 	let [menuQuotation, setMenuQuotation] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const editorPass = (item) => {
 		setItemEdit(item);
@@ -40,6 +41,7 @@ export default function MenuQuotation() {
 	// getting the menu quotation respective to the client
 	const changeOrderList = (client) => {
 		setClient(client);
+		setIsLoading(false);
 		setMenuQuotation(client.menuQuotation);
 	};
 
@@ -143,6 +145,24 @@ export default function MenuQuotation() {
 		setMenuQuotation(updatedMenuQuotation);
 	};
 
+	const loadMenuQuotation = () => {
+		if (!client._id) {
+			return <Text className="text-base mt-4 ml-4 border border-red-500 bg-white w-11/12 p-2">🧧Please select a client</Text>;
+		}
+
+		if (isLoading) {
+			return <ActivityIndicator size="large" color="#65B741" />;
+		}
+
+		return (
+			<ScrollView className="h-72">
+				{menuQuotation.map((item) => (
+					<EditFoodComponent key={item._id} item={item} setIsEditFoodOpen={setIsEditFoodOpen} editorPass={editorPass} deleteItem={deleteItem} />
+				))}
+			</ScrollView>
+		);
+	};
+
 	return (
 		<View className="w-full">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
@@ -188,11 +208,12 @@ export default function MenuQuotation() {
 						<Text className="p-2 m-1 w-20 left-5 font-bold">Cost</Text>
 					</View>
 				</View>
-				<ScrollView className="h-72">
+				{/* <ScrollView className="h-72">
 					{menuQuotation.map((item) => (
 						<EditFoodComponent key={item._id} item={item} setIsEditFoodOpen={setIsEditFoodOpen} editorPass={editorPass} deleteItem={deleteItem} />
 					))}
-				</ScrollView>
+				</ScrollView> */}
+				{loadMenuQuotation()}
 			</View>
 
 			<TouchableOpacity>
