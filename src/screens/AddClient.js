@@ -33,23 +33,22 @@ export default function AddClient({ navigation }) {
 				},
 				body: JSON.stringify(formData),
 			})
-				.then((response) => {
-					if (!response.ok) {
-						console.log(response.json());
-						throw new Error(`Http error! Status: ${response.status}`);
-					}
-					return response.json(); // Parse JSON if the content type is JSON
-				})
+				.then((response) => response.json())
 				.then((data) => {
+					console.log('then block');
+					if (data && data.code === 11000) {
+						Alert.alert('Error', 'Duplicate key error: The document with this key already exists.', [{ text: 'OK' }]); // Handle duplicate key error here
+					} else {
+						throw new Error('Server error');
+					}
+
 					// Handle the parsed JSON data here
-					console.log(data);
 					Alert.alert('Success', 'Client successfully added', [{ text: 'OK' }]);
 					navigation.navigate('Home');
 				})
-				.catch((err) => {
+				.catch((error) => {
 					// Handle errors, including the JSON parsing error
 					Alert.alert('Error', 'Unable to add client', [{ text: 'OK' }]);
-					console.log(err.message);
 				});
 		}
 	};

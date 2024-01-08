@@ -16,6 +16,7 @@ export default function EditOrder() {
 		setIsCalendarOpen(!isCalendarOpen);
 	};
 
+	// fetch order details from database
 	useEffect(() => {
 		if (date !== '') {
 			fetch(`${process.env.EXPO_PUBLIC_API_URL}/orders/${client.businessName}/${date}`, {
@@ -36,6 +37,7 @@ export default function EditOrder() {
 				.catch((err) => {
 					// Handle errors, including the JSON parsing error
 					console.log(err);
+					setOrder([]);
 				});
 		}
 	}, [date]);
@@ -78,7 +80,7 @@ export default function EditOrder() {
 		setOrder(updatedOrder);
 	};
 
-	// getting the menu quotation respective to the client
+	// getting the client
 	const changeOrderList = (client) => {
 		setClient(client);
 	};
@@ -88,6 +90,20 @@ export default function EditOrder() {
 		newDate = new Date(newDate.toISOString().replace('T00:00', 'T18:30'));
 		setDate(newDate);
 		console.log(newDate);
+	};
+
+	const loadOrder = () => {
+		if (client && date && order.length === 0) {
+			return <Text className="text-base mt-4 bg-white w-11/12 p-2">🧧No orders found</Text>;
+		}
+
+		return (
+			<ScrollView className="h-72">
+				{order.map((menuItem, index) => (
+					<EditRemove key={index} item={menuItem} updateOrder={updateOrder} deleteOrder={deleteOrder} />
+				))}
+			</ScrollView>
+		);
 	};
 	return (
 		<View className="flex-1 bg-white-500">
@@ -109,11 +125,12 @@ export default function EditOrder() {
 						<Text className="text-lg">Item</Text>
 						<Text className="text-lg">Quantity</Text>
 					</View>
-					<ScrollView className="h-72">
+					{/* <ScrollView className="h-72">
 						{order.map((menuItem, index) => (
 							<EditRemove key={index} item={menuItem} updateOrder={updateOrder} deleteOrder={deleteOrder} />
 						))}
-					</ScrollView>
+					</ScrollView> */}
+					{loadOrder()}
 				</View>
 			</View>
 		</View>
