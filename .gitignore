@@ -7,7 +7,6 @@ node_modules/
 .expo/
 dist/
 web-build/
-assets/
 
 # Native
 *.orig.*
@@ -34,7 +33,3 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
-
-# vscode
-.vscode
-%ProgramData%/
