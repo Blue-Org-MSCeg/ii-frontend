@@ -9,7 +9,6 @@ export default function EditOrder() {
 	let [date, setDate] = useState('');
 	const [client, setClient] = useState({});
 	const [orderId, setOrderId] = useState('');
-	const [selectedStartDate, setSelectedStartDate] = useState('');
 	const [order, setOrder] = useState([]);
 
 	const handleOpenCalendar = () => {
@@ -19,6 +18,7 @@ export default function EditOrder() {
 	// fetch order details from database
 	useEffect(() => {
 		if (date !== '') {
+			console.log(`${process.env.EXPO_PUBLIC_API_URL}/orders/${client.businessName}/${date}`);
 			fetch(`${process.env.EXPO_PUBLIC_API_URL}/orders/${client.businessName}/${date}`, {
 				method: 'GET',
 				headers: {
@@ -86,10 +86,15 @@ export default function EditOrder() {
 	};
 
 	const getDate = (date) => {
-		let newDate = new Date(date.replaceAll('/', '-'));
-		newDate = new Date(newDate.toISOString().replace('T00:00', 'T18:30'));
-		setDate(newDate);
-		console.log(newDate);
+		const inputDate = new Date(date);
+
+		const day = inputDate.getUTCDate();
+		const month = inputDate.getUTCMonth() + 1; // Months are zero-indexed
+		const year = inputDate.getUTCFullYear();
+
+		const formattedDate = `${year}-${month}-${day}`;
+
+		setDate(formattedDate);
 	};
 
 	const loadOrder = () => {
@@ -116,20 +121,15 @@ export default function EditOrder() {
 			<View className="ml-8 mt-20">
 				<Text className="text-base">Select Date</Text>
 				<TouchableOpacity className="border w-4/5 p-3 mt-2" onPress={handleOpenCalendar}>
-					<Text>{selectedStartDate}</Text>
+					<Text>{date}</Text>
 				</TouchableOpacity>
 
-				<DateComponent isCalendarOpen={isCalendarOpen} setSelectedStartDate={setSelectedStartDate} handleOpenCalendar={handleOpenCalendar} setDate={getDate} />
+				<DateComponent isCalendarOpen={isCalendarOpen} handleOpenCalendar={handleOpenCalendar} setDate={getDate} />
 				<View>
 					<View className="flex flex-row justify-between py-2 px-10 bg-zinc-300 w-11/12 mt-9 border-b">
 						<Text className="text-lg">Item</Text>
 						<Text className="text-lg">Quantity</Text>
 					</View>
-					{/* <ScrollView className="h-72">
-						{order.map((menuItem, index) => (
-							<EditRemove key={index} item={menuItem} updateOrder={updateOrder} deleteOrder={deleteOrder} />
-						))}
-					</ScrollView> */}
 					{loadOrder()}
 				</View>
 			</View>
