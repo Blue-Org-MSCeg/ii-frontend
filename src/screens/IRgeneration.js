@@ -114,15 +114,29 @@ const IRgeneration = () => {
 
 	// getting and formatting date from DateComponent
 	const getStartDate = (date) => {
-		const newDate = new Date(date.replaceAll('/', '-'));
-		setStartDate(newDate);
-		console.log('start date:', newDate);
+		const inputDate = new Date(date);
+
+		const day = inputDate.getUTCDate();
+		const month = inputDate.getUTCMonth() + 1; // Months are zero-indexed
+		const year = inputDate.getUTCFullYear();
+
+		const formattedDate = `${year}-${month}-${day}`;
+
+		console.log('formated date: ', formattedDate);
+		setStartDate(formattedDate);
 	};
 
 	const getEndDate = (date) => {
-		const newDate = new Date(date.replaceAll('/', '-'));
-		console.log('end date:', newDate);
-		setEndDate(newDate);
+		const inputDate = new Date(date);
+
+		const day = inputDate.getUTCDate();
+		const month = inputDate.getUTCMonth() + 1; // Months are zero-indexed
+		const year = inputDate.getUTCFullYear();
+
+		const formattedDate = `${year}-${month}-${day}`;
+
+		console.log('formated date: ', formattedDate);
+		setEndDate(formattedDate);
 	};
 
 	// get client details
@@ -244,18 +258,18 @@ const IRgeneration = () => {
 				<Text className="text-center">Invoice Generation</Text>
 			</View>
 			<DropDown changeOrderList={changeOrderList} />
-			<DateComponent isCalendarOpen={isStartCalendarOpen} setSelectedStartDate={setSelectedStartDate} handleOpenCalendar={handleOpenCalendarStart} setDate={getStartDate} />
-			<DateComponent isCalendarOpen={isEndCalendarOpen} setSelectedStartDate={setSelectedEndDate} handleOpenCalendar={handleOpenCalendarEnd} setDate={getEndDate} />
+			<DateComponent isCalendarOpen={isStartCalendarOpen} handleOpenCalendar={handleOpenCalendarStart} setDate={getStartDate} />
+			<DateComponent isCalendarOpen={isEndCalendarOpen} handleOpenCalendar={handleOpenCalendarEnd} setDate={getEndDate} />
 			{/* date selections */}
 			<View className="mb-36 ml-10">
 				<Text className="">Start Date:</Text>
 				<TouchableOpacity className="border w-4/5 p-3" onPress={handleOpenCalendarStart}>
-					<Text>{selectedStartDate}</Text>
+					<Text>{startDate}</Text>
 				</TouchableOpacity>
 
 				<Text className="mt-4">End Date:</Text>
 				<TouchableOpacity className="border w-4/5 p-3 mt-2" onPress={handleOpenCalendarEnd}>
-					<Text>{selectedEndDate}</Text>
+					<Text>{endDate}</Text>
 				</TouchableOpacity>
 			</View>
 
