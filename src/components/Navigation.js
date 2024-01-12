@@ -9,13 +9,17 @@ import EditOrder from '../screens/EditOrder';
 import IRgeneration from '../screens/IRgeneration';
 import MenuQuotation from '../screens/MenuQuotation';
 import ViewMenu from '../screens/ViewMenu';
+import Register from '../screens/Register';
+import SignIn from '../screens/SignIn';
 
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
 	return (
 		<NavigationContainer>
-			<Stack.Navigator initialRouterName="Home" screenOptions={{ headerShown: false }}>
+			<Stack.Navigator initialRouterName="Register" screenOptions={{ headerShown: false }}>
+				<Stack.Screen name="Register" component={Register} />
+				<Stack.Screen name="SignIn" component={SignIn} />
 				<Stack.Screen name="Home" component={HomeScreen} />
 				<Stack.Screen name="ViewClients" component={ViewClients} />
 				<Stack.Screen name="AddOrders" component={AddOrders} />
