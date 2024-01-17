@@ -2,20 +2,36 @@ import { Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Head from '../components/Head';
 import ClientComponent from '../components/ClientComponent';
 import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ViewClients({ navigation }) {
 	const [clients, setClients] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [token, setToken] = useState(null);
 
 	useEffect(() => {
-		fetch(`${process.env.EXPO_PUBLIC_API_URL}/clients`)
+		async function isUserLoggedIn() {
+			tok = await AsyncStorage.getItem('token');
+			setToken(tok);
+		}
+		isUserLoggedIn();
+	}, []);
+
+	useEffect(() => {
+		fetch(`${process.env.EXPO_PUBLIC_API_URL}/clients/`, {
+			method: 'GET',
+			headers: {
+				'Content-type': 'application/json',
+				authorization: `Bearer ${token}`,
+			},
+		})
 			.then((response) => response.json())
 			.then((res) => {
 				setClients(res.data.clients);
 				setIsLoading(false);
 			})
 			.catch((err) => console.log(err));
-	}, []);
+	}, [token]);
 
 	const handleDelete = (id) => {
 		const updatedCLients = clients.filter((client) => client._id !== id);

@@ -62,16 +62,21 @@ export default function ViewMenu() {
 
 	// posting the food to the db when submit button is pressed
 	useEffect(() => {
-		fetch(`${process.env.EXPO_PUBLIC_API_URL}/menus/`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(formData),
-		})
-			.then((response) => response.json())
-			.then((data) => setMenuItem((current) => [...current, data.data.food]))
-			.catch((err) => console.log(err));
+		if (formData)
+			fetch(`${process.env.EXPO_PUBLIC_API_URL}/menus/`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(formData),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					console.log(data);
+					setFormData({});
+					// setMenuItem((current) => [...current, data.data.food]);
+				})
+				.catch((err) => console.log(err));
 
 		toggleAddFoodHandler();
 	}, [formData]);
@@ -134,7 +139,6 @@ export default function ViewMenu() {
 
 	// remove food from menu
 	const deleteMenuItem = (item) => {
-		console.log('delete:', item);
 		fetch(`${process.env.EXPO_PUBLIC_API_URL}/menus/${item._id}`, {
 			method: 'DELETE',
 			headers: {
