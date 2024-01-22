@@ -18,13 +18,19 @@ export default AddOrders = ({ navigation }) => {
 		setIsCalendarOpen(!isCalendarOpen);
 	};
 
-	const [selectedStartDate, setSelectedStartDate] = useState('');
 	const [date, setDate] = useState('');
 	// getting and formatting date from DateComponent
 	const getDate = (date) => {
-		let newDate = new Date(date.replaceAll('/', '-'));
-		newDate = new Date(newDate.toISOString().replace('T00:00', 'T18:30'));
-		setDate(newDate);
+		const inputDate = new Date(date);
+
+		const day = inputDate.getUTCDate();
+		const month = inputDate.getUTCMonth() + 1; // Months are zero-indexed
+		const year = inputDate.getUTCFullYear();
+
+		const formattedDate = `${year}-${month}-${day}`;
+
+		console.log('formated date: ', formattedDate);
+		setDate(formattedDate);
 	};
 
 	// getting the menu quotation respective to the client
@@ -100,11 +106,11 @@ export default AddOrders = ({ navigation }) => {
 				<DropDown changeOrderList={changeOrderList} />
 				<View className="ml-8">
 					<Text className="text-base">Select Date</Text>
-					<TouchableOpacity className="border w-4/5 p-3 mt-2" onPress={handleOpenCalendar}>
-						<Text>{selectedStartDate}</Text>
+					<TouchableOpacity className="border w-5/6 p-3 ml-3 mt-2" onPress={handleOpenCalendar}>
+						<Text>{date}</Text>
 					</TouchableOpacity>
 
-					<DateComponent isCalendarOpen={isCalendarOpen} setSelectedStartDate={setSelectedStartDate} handleOpenCalendar={handleOpenCalendar} setDate={getDate} />
+					<DateComponent isCalendarOpen={isCalendarOpen} handleOpenCalendar={handleOpenCalendar} setDate={getDate} />
 					<View>
 						<View className="flex flex-row justify-between py-2 px-10 bg-zinc-300 w-11/12 mt-9 border-b">
 							<Text className="text-lg">Item</Text>

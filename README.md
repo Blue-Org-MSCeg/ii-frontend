@@ -25,7 +25,7 @@ Refer [Backend](https://github.com/Blue-Org-MSCeg/ii-backend)
 
 ## Installation:
 1. Installation: `npm install`
-2. In the project directory, you can run: `npx expo start`
+2. In the project directory, you can run: `npm start`
 
 Open  the expo app on your mobile and scan the QR generated in ur machine. And there you go
 
