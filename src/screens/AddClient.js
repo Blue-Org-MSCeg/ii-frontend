@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Button, TextInput, Alert } from 'react-native';
+import { View, Text, ScrollView, Button, TextInput, Alert, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 import PhoneComponent from '../components/PhoneComponent';
@@ -36,8 +36,8 @@ export default function AddClient({ navigation }) {
 	let [email, setEmail] = useState('');
 	let [poa, setPoa] = useState();
 	let [address, setAddress] = useState('');
-	const [gstInputClass, setGstInputClass] = useState('border rounded-full bg-white-400  border-[#6dab4a] w-full py-2 px-5');
-	const [emailInputClass, setEmailInputClass] = useState('border rounded-full bg-white-400  border-[#6dab4a] w-full py-2 px-5');
+	const [gstInputClass, setGstInputClass] = useState('border rounded-full bg-white-400  border-green w-full py-2 px-5');
+	const [emailInputClass, setEmailInputClass] = useState('border rounded-full bg-white-400  border-green w-full py-2 px-5');
 
 	const addClient = () => {
 		if (validateInputs()) {
@@ -147,7 +147,7 @@ export default function AddClient({ navigation }) {
 				<Text className="text-gray-700 text-lg font-light">Business name : </Text>
 
 				<TextInput
-					className="border rounded-full bg-white-400  border-[#6dab4a] w-full py-2 px-5"
+					className="border rounded-full bg-white-400  border-green w-full py-2 px-5"
 					maxLength={100}
 					placeholder="John Pvt Lmt"
 					value={businessName}
@@ -168,24 +168,26 @@ export default function AddClient({ navigation }) {
 				<Text className="text-gray-700 text-lg font-light">Business phone number : </Text>
 
 				{/* <PhoneComponent setphoneNumber={setphoneNumber} /> */}
-				<TextInput className="border rounded-full bg-white-400  border-[#6dab4a] w-full py-2 px-5" keyboardType="numeric" maxLength={10} setphoneNumber={setphoneNumber} />
+				<TextInput className="border rounded-full bg-white-400  border-green w-full py-2 px-5" keyboardType="numeric" maxLength={10} setphoneNumber={setphoneNumber} />
 
 				<Text className="text-gray-700 text-lg font-light">Business email : </Text>
 				<TextInput className={emailInputClass} keyboardType="email-address" maxLength={100} value={email} onChangeText={(email) => validateEmail(email)} />
 
 				<Text className="text-gray-700 text-lg font-light">Period of agreement : </Text>
-				<TextInput className="border rounded-full bg-white-400  border-[#6dab4a] w-full py-2 px-5" keyboardType="numeric" maxLength={2} value={poa} onChangeText={setPoa} />
+				<TextInput className="border rounded-full bg-white-400  border-green w-full py-2 px-5" keyboardType="numeric" maxLength={2} value={poa} onChangeText={setPoa} />
 				<Text className="text-gray-700 text-lg font-light">Address : </Text>
-				<TextInput className="h-24 border rounded-xl bg-white-400  border-[#6dab4a] w-full py-2 px-5" multiline={true} value={address} onChangeText={setAddress} />
+				<TextInput className="h-24 border rounded-xl bg-white-400  border-green w-full py-2 px-5" multiline={true} value={address} onChangeText={setAddress} />
 
-				<View className="flex items-center mb-9">
-					<Button title="Submit" onPress={addClient} />
-				</View>
+				<TouchableOpacity className="flex items-center mb-9">
+					<Text onPress={addClient} className="bg-green text-white rounded-sm px-3 py-2 tracking-wider">
+						Submit
+					</Text>
+				</TouchableOpacity>
 			</View>
 		</ScrollView>
 	) : (
 		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-			<ActivityIndicator size="large" color="#0000ff" />
+			<ActivityIndicator size="large" color="#6dab4a" />
 		</View>
 	);
 }
