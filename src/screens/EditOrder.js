@@ -1,10 +1,35 @@
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import DropDown from '../components/DropDown';
 import DateComponent from '../components/DateComponent';
 import EditRemove from '../components/EditRemove';
+import { CheckToken } from '../middleware/CheckToken';
 
-export default function EditOrder() {
+export default function EditOrder({ navigation }) {
+	// check if user is logged in
+	const [isLoggedIn, setIsLoggedIn] = useState('first');
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			console.log('refreshed');
+			checkInitialToken();
+		});
+		return unsubscribe;
+	}, [navigation]);
+
+	const checkInitialToken = async () => {
+		const hasToken = await CheckToken();
+		console.log(hasToken);
+		setIsLoggedIn(hasToken);
+	};
+
+	useEffect(() => {
+		if (!isLoggedIn && isLoggedIn !== 'first') {
+			navigation.navigate('SignIn');
+		}
+	}, [isLoggedIn]);
+	//user verification ends here
+
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 	let [date, setDate] = useState('');
 	const [client, setClient] = useState({});
@@ -110,29 +135,34 @@ export default function EditOrder() {
 			</ScrollView>
 		);
 	};
-	return (
+
+	return isLoggedIn ? (
 		<View className="flex-1 bg-white-500">
-			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
-				<Text className="text-center">Edit Orders</Text>
+			<View className="mt-16 p-5">
+				<Text className="text-2xl ml-5 tracking-wider">Edit Orders</Text>
 			</View>
 			<View className="">
 				<DropDown changeOrderList={changeOrderList} />
 			</View>
-			<View className="ml-8 mt-20">
-				<Text className="text-base">Select Date</Text>
-				<TouchableOpacity className="border w-4/5 p-3 mt-2" onPress={handleOpenCalendar}>
+			<View className="ml-8">
+				<Text className="text-base font-light">Select Date</Text>
+				<TouchableOpacity className="border border-green w-11/12 p-3 mt-3" onPress={handleOpenCalendar}>
 					<Text>{date}</Text>
 				</TouchableOpacity>
 
 				<DateComponent isCalendarOpen={isCalendarOpen} handleOpenCalendar={handleOpenCalendar} setDate={getDate} />
 				<View>
-					<View className="flex flex-row justify-between py-2 px-10 bg-zinc-300 w-11/12 mt-9 border-b">
+					<View className="flex flex-row justify-between py-2 px-10 bg-white w-11/12 mt-9 border-b border-green">
 						<Text className="text-lg">Item</Text>
 						<Text className="text-lg">Quantity</Text>
 					</View>
 					{loadOrder()}
 				</View>
 			</View>
+		</View>
+	) : (
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<ActivityIndicator size="large" color="#" />
 		</View>
 	);
 }

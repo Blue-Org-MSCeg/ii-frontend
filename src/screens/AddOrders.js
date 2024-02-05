@@ -1,11 +1,36 @@
-import { ScrollView, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View, Alert, ActivityIndicator } from 'react-native';
 import Head from './../components/Head';
 import { useEffect, useState } from 'react';
 import DateComponent from '../components/DateComponent';
 import MenuComponent from './../components/MenuComponent';
 import DropDown from '../components/DropDown';
+import { CheckToken } from '../middleware/CheckToken';
 
 export default AddOrders = ({ navigation }) => {
+	// check if user is logged in
+	const [isLoggedIn, setIsLoggedIn] = useState('first');
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			console.log('refreshed');
+			checkInitialToken();
+		});
+		return unsubscribe;
+	}, [navigation]);
+
+	const checkInitialToken = async () => {
+		const hasToken = await CheckToken();
+		console.log(hasToken);
+		setIsLoggedIn(hasToken);
+	};
+
+	useEffect(() => {
+		if (!isLoggedIn && isLoggedIn !== 'first') {
+			navigation.navigate('SignIn');
+		}
+	}, [isLoggedIn]);
+	//user verification ends here
+
 	// setting the form data
 	const [formData, setFormData] = useState({ orders: [] });
 
@@ -98,21 +123,20 @@ export default AddOrders = ({ navigation }) => {
 		}
 	}, [formData]);
 
-	return (
-		<View>
-			<Head />
-			<Text className="text-lg text-center">Add Orders</Text>
+	return isLoggedIn ? (
+		<View className="mt-16">
+			<Text className="text-2xl font-base tracking-widest ml-10">Add Orders</Text>
 			<View>
 				<DropDown changeOrderList={changeOrderList} />
-				<View className="ml-8">
+				<View className="ml-10">
 					<Text className="text-base">Select Date</Text>
-					<TouchableOpacity className="border w-5/6 p-3 ml-3 mt-2" onPress={handleOpenCalendar}>
+					<TouchableOpacity className="border border-green w-11/12 p-3 mt-2" onPress={handleOpenCalendar}>
 						<Text>{date}</Text>
 					</TouchableOpacity>
 
 					<DateComponent isCalendarOpen={isCalendarOpen} handleOpenCalendar={handleOpenCalendar} setDate={getDate} />
 					<View>
-						<View className="flex flex-row justify-between py-2 px-10 bg-zinc-300 w-11/12 mt-9 border-b">
+						<View className="flex flex-row justify-between py-2 px-10 bg-white w-11/12 mt-9 border-b border-green">
 							<Text className="text-lg">Item</Text>
 							<Text className="text-lg">Quantity</Text>
 						</View>
@@ -122,11 +146,15 @@ export default AddOrders = ({ navigation }) => {
 							))}
 						</ScrollView>
 					</View>
-					<TouchableOpacity className="bg-blue-400 w-20 p-2 rounded-md my-3" onPress={handleSubmit}>
-						<Text className="text-center text-white">submit</Text>
+					<TouchableOpacity className="bg-green w-20 px-2 py-2 rounded-md my-3 ml-2" onPress={handleSubmit}>
+						<Text className="text-center text-white tracking-wider">submit</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
+		</View>
+	) : (
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<ActivityIndicator size="large" color="##6dab4a" />
 		</View>
 	);
 };

@@ -3,8 +3,8 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 export default EditFoodComponent = ({ item, setIsEditFoodOpen, editorPass, deleteItem }) => {
 	return (
-		<View className=" flex-row justify-between items-center mx-3 bg-gray-300" key={item._id}>
-			<View className="p-2 m-1 w-40 ">
+		<View className="flex-row justify-between items-center mx-3 bg-white rounded-md w-11/12 shadow-2xl my-1 py-1" key={item._id}>
+			<View className="p-2 m-1 w-40">
 				<Text className="text-base">{item.foodItem}</Text>
 			</View>
 			<View className="p-2 m-1 w-20 ">
@@ -13,12 +13,11 @@ export default EditFoodComponent = ({ item, setIsEditFoodOpen, editorPass, delet
 
 			<TouchableOpacity>
 				<Text
-					title="edit"
 					onPress={() => {
 						setIsEditFoodOpen(true);
 						editorPass(item);
 					}}
-					className="bg-blue-500 px-3 py-1 rounded-md text-white"
+					className="bg-green px-3 py-1 rounded-md text-white"
 				>
 					Edit
 				</Text>

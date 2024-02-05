@@ -1,18 +1,41 @@
-import { View, Text, ScrollView, Button, TextInput, Alert } from 'react-native';
-import React, { useState } from 'react';
-
-import PhoneComponent from '../components/PhoneComponent';
+import { View, Text, ScrollView, Button, TextInput, Alert, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Head from '../components/Head';
+import { CheckToken } from '../middleware/CheckToken';
 
 export default function AddClient({ navigation }) {
+	// check if user is logged in
+	const [isLoggedIn, setIsLoggedIn] = useState('first');
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			console.log('refreshed');
+			checkInitialToken();
+		});
+		return unsubscribe;
+	}, [navigation]);
+
+	const checkInitialToken = async () => {
+		const hasToken = await CheckToken();
+		console.log(hasToken);
+		setIsLoggedIn(hasToken);
+	};
+
+	useEffect(() => {
+		if (!isLoggedIn && isLoggedIn !== 'first') {
+			navigation.navigate('SignIn');
+		}
+	}, [isLoggedIn]);
+	//user verification ends here
+
 	let [businessName, setBusinessName] = useState('');
 	let [gstNumber, setgstNumber] = useState();
 	let [phoneNumber, setphoneNumber] = useState();
 	let [email, setEmail] = useState('');
 	let [poa, setPoa] = useState();
 	let [address, setAddress] = useState('');
-	const [gstInputClass, setGstInputClass] = useState('border-2 bg-white-400 rounded-md border-gray-400 w-64 p-2 ml-10');
-	const [emailInputClass, setEmailInputClass] = useState('border-2 bg-white-400 rounded-md border-gray-400 w-64 p-2 ml-10');
+	const [gstInputClass, setGstInputClass] = useState('border rounded-full bg-white-400  border-green w-full py-2 px-5');
+	const [emailInputClass, setEmailInputClass] = useState('border rounded-full bg-white-400  border-green w-full py-2 px-5');
 
 	const addClient = () => {
 		if (validateInputs()) {
@@ -115,14 +138,14 @@ export default function AddClient({ navigation }) {
 		Alert.alert('Validation Error', message, [{ text: 'OK' }]);
 	};
 
-	return (
+	return isLoggedIn ? (
 		<ScrollView automaticallyAdjustKeyboardInsets>
 			<Head />
-			<View className="p-15 mt-14 space-y-4">
-				<Text className="ml-10 text-gray-700">Business name : </Text>
+			<View className="p-15 mt-1 space-y-4 mx-10">
+				<Text className="text-gray-700 text-lg font-light">Business name : </Text>
 
 				<TextInput
-					className="border-2 rounded-md bg-white-400  border-gray-400 w-64 p-2 ml-10 "
+					className="border rounded-full bg-white-400  border-green w-full py-2 px-5"
 					maxLength={100}
 					placeholder="John Pvt Lmt"
 					value={businessName}
@@ -131,7 +154,7 @@ export default function AddClient({ navigation }) {
 					}}
 				/>
 
-				<Text className="ml-10">GST number : </Text>
+				<Text className="text-gray-700 text-lg font-light">GST number : </Text>
 
 				<TextInput
 					className={gstInputClass}
@@ -140,22 +163,29 @@ export default function AddClient({ navigation }) {
 					value={gstNumber}
 					onChangeText={(gst) => validateGst(gst)}
 				/>
-				<Text className="ml-10">Business phone number : </Text>
+				<Text className="text-gray-700 text-lg font-light">Business phone number : </Text>
 
-				<PhoneComponent setphoneNumber={setphoneNumber} />
+				{/* <PhoneComponent setphoneNumber={setphoneNumber} /> */}
+				<TextInput className="border rounded-full bg-white-400  border-green w-full py-2 px-5" keyboardType="numeric" maxLength={10} setphoneNumber={setphoneNumber} />
 
-				<Text className="ml-10">Business email : </Text>
+				<Text className="text-gray-700 text-lg font-light">Business email : </Text>
 				<TextInput className={emailInputClass} keyboardType="email-address" maxLength={100} value={email} onChangeText={(email) => validateEmail(email)} />
 
-				<Text className="ml-10">Period of agreement : </Text>
-				<TextInput className="border-2 bg-white-400 rounded-md border-gray-400 w-64 p-2 ml-10" keyboardType="numeric" maxLength={2} value={poa} onChangeText={setPoa} />
-				<Text className="ml-10">address : </Text>
-				<TextInput className="border-2 mt-0 h-24 p-0 pt-0 bg-white-400 rounded-md border-gray-400 w-64 ml-10" multiline={true} value={address} onChangeText={setAddress} />
+				<Text className="text-gray-700 text-lg font-light">Period of agreement : </Text>
+				<TextInput className="border rounded-full bg-white-400  border-green w-full py-2 px-5" keyboardType="numeric" maxLength={2} value={poa} onChangeText={setPoa} />
+				<Text className="text-gray-700 text-lg font-light">Address : </Text>
+				<TextInput className="h-24 border rounded-xl bg-white-400  border-green w-full py-2 px-5" multiline={true} value={address} onChangeText={setAddress} />
 
-				<View className="flex items-center mb-9">
-					<Button title="Submit" onPress={addClient} />
-				</View>
+				<TouchableOpacity className="flex items-center mb-9">
+					<Text onPress={addClient} className="bg-green text-white rounded-sm px-3 py-2 tracking-wider">
+						Submit
+					</Text>
+				</TouchableOpacity>
 			</View>
 		</ScrollView>
+	) : (
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<ActivityIndicator size="large" color="#6dab4a" />
+		</View>
 	);
 }

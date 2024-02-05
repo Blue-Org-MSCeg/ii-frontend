@@ -3,8 +3,32 @@ import React, { useEffect, useState } from 'react';
 import EditFoodComponent from '../components/EditFoodComponent';
 import EditerComponent from '../components/EditerComponent';
 import DropDown from '../components/DropDown';
+import { CheckToken } from '../middleware/CheckToken';
 
-export default function MenuQuotation() {
+export default function MenuQuotation({ navigation }) {
+	// check if user is logged in
+	const [isLoggedIn, setIsLoggedIn] = useState('first');
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			console.log('refreshed');
+			checkInitialToken();
+		});
+		return unsubscribe;
+	}, [navigation]);
+
+	const checkInitialToken = async () => {
+		const hasToken = await CheckToken();
+		console.log(hasToken);
+		setIsLoggedIn(hasToken);
+	};
+
+	useEffect(() => {
+		if (!isLoggedIn && isLoggedIn !== 'first') {
+			navigation.navigate('SignIn');
+		}
+	}, [isLoggedIn]); //user verification ends here
+
 	const [cost, setCost] = useState('');
 	const [food, setFood] = useState('');
 	const [client, setClient] = useState({});
@@ -163,10 +187,10 @@ export default function MenuQuotation() {
 		);
 	};
 
-	return (
+	return isLoggedIn ? (
 		<View className="w-full">
-			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
-				<Text className="text-center">MenuQuotation</Text>
+			<View className="mt-10 mb-8 p-5">
+				<Text className="text-2xl ml-3 tracking-wider">Menu Quotation</Text>
 			</View>
 
 			{/* list clients */}
@@ -176,21 +200,21 @@ export default function MenuQuotation() {
 			{isAddFoodOpen && (
 				<View className="align-middle justify-center content-centers flex border-b mb-5">
 					<View className="flex-row flex-2 p-15">
-						<View className="border-2 bg-gray-300 border-black w-7/12 p-2 ml-10 ">
+						<View className="border bg-white border-green w-7/12 p-2 ml-10 ">
 							<TextInput onChangeText={changeFood} maxLength={40} placeholder="food item" />
 						</View>
-						<View className="bg-gray-300 border-2 border-black  p-2 mr-10 ml-6 ">
+						<View className="bg-white border border-green  p-2 mr-10 ml-6 ">
 							<TextInput onChangeText={changeCost} className="" placeholder="cost" keyboardType="numeric" />
 						</View>
 					</View>
 					<TouchableOpacity>
 						<View className="flex-row justify-between p-5">
-							<View className="ml-6">
-								<Button title="CANCEL" onPress={toggleAddFoodHandler} />
-							</View>
-							<View className="mr-10">
-								<Button onPress={addFood} title="submit" />
-							</View>
+							<TouchableOpacity className="bg-green w-20 px-2 py-2 rounded-md my-3 ml-7" onPress={toggleAddFoodHandler}>
+								<Text className="text-center text-white tracking-wider">cancel</Text>
+							</TouchableOpacity>
+							<TouchableOpacity className="bg-green w-20 px-2 py-2 rounded-md my-3 mr-7" onPress={addFood}>
+								<Text className="text-center text-white tracking-wider">submit</Text>
+							</TouchableOpacity>
 						</View>
 					</TouchableOpacity>
 				</View>
@@ -199,13 +223,13 @@ export default function MenuQuotation() {
 			{isEditFoodOpen && <EditerComponent itemEdit={itemEdit} itemEditPass={itemEditPass} setIsEditFoodOpen={setIsEditFoodOpen} />}
 
 			{/* View menu */}
-			<View className="place-items-center">
-				<View className="flex-row bg-gray-300  mx-3 mb-2">
+			<View className="flex justify-center items-center">
+				<View className="flex-row mx-3 mb-2 py-2 text-lg bg-white w-11/12 mt-9 border-b border-green">
 					<View>
-						<Text className=" p-2 m-1 w-40  font-bold">Items</Text>
+						<Text className="text-lg p-2 m-1 w-40 tracking-wider font-bold">Items</Text>
 					</View>
 					<View>
-						<Text className="p-2 m-1 w-20 left-5 font-bold">Cost</Text>
+						<Text className="text-lg p-2 m-1 w-20 tracking-wider left-5 font-bold">Cost</Text>
 					</View>
 				</View>
 				{/* <ScrollView className="h-72">
@@ -216,11 +240,13 @@ export default function MenuQuotation() {
 				{loadMenuQuotation()}
 			</View>
 
-			<TouchableOpacity>
-				<View className="w-20 justify-between p-1 rounded-md mt-10 ml-4">
-					<Button title="ADD" onPress={toggleAddFoodHandler} />
-				</View>
+			<TouchableOpacity className="bg-green w-20 px-2 py-2 rounded-md my-3 ml-4" onPress={toggleAddFoodHandler}>
+				<Text className="text-center text-white tracking-wider">ADD</Text>
 			</TouchableOpacity>
+		</View>
+	) : (
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<ActivityIndicator size="large" color="#0000ff" />
 		</View>
 	);
 }

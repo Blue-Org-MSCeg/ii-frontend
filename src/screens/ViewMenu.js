@@ -2,9 +2,33 @@ import { View, Text, Button, TouchableOpacity, TextInput, Alert, ScrollView, Act
 import React, { useEffect, useState } from 'react';
 import EditFoodComponent from '../components/EditFoodComponent';
 import EditerComponent from '../components/EditerComponent';
-export default function ViewMenu() {
-	const [menuItem, setMenuItem] = useState([]);
+import { CheckToken } from '../middleware/CheckToken';
 
+export default function ViewMenu({ navigation }) {
+	// check if user is logged in
+	const [isLoggedIn, setIsLoggedIn] = useState('first');
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			console.log('refreshed');
+			checkInitialToken();
+		});
+		return unsubscribe;
+	}, [navigation]);
+
+	const checkInitialToken = async () => {
+		const hasToken = await CheckToken();
+		console.log(hasToken);
+		setIsLoggedIn(hasToken);
+	};
+
+	useEffect(() => {
+		if (!isLoggedIn && isLoggedIn !== 'first') {
+			navigation.navigate('SignIn');
+		}
+	}, [isLoggedIn]); //user verification ends here
+
+	const [menuItem, setMenuItem] = useState([]);
 	const [cost, setCost] = useState('');
 	const [food, setFood] = useState('');
 	const [formData, setFormData] = useState({});
@@ -167,7 +191,7 @@ export default function ViewMenu() {
 		);
 	};
 
-	return (
+	return isLoggedIn ? (
 		<View className="w-full">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
 				<Text className="text-center">View Menu</Text>
@@ -210,8 +234,8 @@ export default function ViewMenu() {
 					</View>
 				</View>
 				{/* {menuItem.map((item) => (
-					<EditFoodComponent key={item._id} item={item} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={menuItem} editorPass={editorPass} deleteItem={deleteMenuItem} />
-				))} */}
+			<EditFoodComponent key={item._id} item={item} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={menuItem} editorPass={editorPass} deleteItem={deleteMenuItem} />
+		))} */}
 				{loadMenu()}
 			</View>
 			<TouchableOpacity>
@@ -219,6 +243,10 @@ export default function ViewMenu() {
 					<Button title="ADD" onPress={toggleAddFoodHandler} />
 				</View>
 			</TouchableOpacity>
+		</View>
+	) : (
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<ActivityIndicator size="large" color="#0000ff" />
 		</View>
 	);
 }

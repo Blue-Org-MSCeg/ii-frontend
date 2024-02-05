@@ -16,7 +16,7 @@ export default function ClientComponent(props) {
 		props.handleDelete(id);
 	};
 	return (
-		<View key={props.client._id} className="w-4/5 flex flex-row justify-between items-center bg-gray-300 p-3 border-b border-gray-400">
+		<View key={props.client._id} className="w-4/5 flex flex-row justify-between items-center bg-white py-4 px-4 mb-2 rounded-lg shadow-2xl">
 			<Text className="text-base">{props.client.businessName}</Text>
 			<TouchableOpacity className="px-3 py-1 rounded-full" onPress={() => deleteClient(props.client._id)}>
 				<FontAwesome name="minus" color="red" size={15} />

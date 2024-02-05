@@ -25,13 +25,14 @@ export default function SignIn({ navigation }) {
 					password: '',
 				});
 				await AsyncStorage.setItem('token', data.token);
-				console.log('sign in ', data.token);
+				// console.log('sign in ', data.token);
 				navigation.navigate('Home');
 			})
 			.catch((err) => {
 				Alert.alert('Error', 'Unable to login', [{ text: 'ok' }]);
 			});
 	};
+
 	return (
 		<KeyboardAvoidWrapper>
 			<View className="h-screen">
