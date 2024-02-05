@@ -1,4 +1,4 @@
-import { View, Button, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { View, Button, Text, TouchableOpacity, Alert, ActivityIndicator, Image } from 'react-native';
 import DropDown from '../components/DropDown';
 import { shareAsync } from 'expo-sharing';
 import { printToFileAsync } from 'expo-print';
@@ -7,6 +7,7 @@ import DateComponent from '../components/DateComponent';
 import XLSX from 'xlsx';
 import * as FileSystem from 'expo-file-system';
 import { CheckToken } from '../middleware/CheckToken';
+const bg = require('./../../assets/invoice.png');
 
 const data = {
 	bankname: 'UNION BANK OF INDIA',
@@ -379,38 +380,44 @@ const IRgeneration = ({ navigation }) => {
 
 	return isLoggedIn ? (
 		<View className="flex-1">
-			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
-				<Text className="text-center">Invoice Generation</Text>
-			</View>
-			<DropDown changeOrderList={changeOrderList} />
-			<DateComponent isCalendarOpen={isStartCalendarOpen} handleOpenCalendar={handleOpenCalendarStart} setDate={getStartDate} />
-			<DateComponent isCalendarOpen={isEndCalendarOpen} handleOpenCalendar={handleOpenCalendarEnd} setDate={getEndDate} />
-			{/* date selections */}
-			<View className="mb-36 ml-10">
-				<Text className="">Start Date:</Text>
-				<TouchableOpacity className="border w-4/5 p-3" onPress={handleOpenCalendarStart}>
-					<Text>{startDate}</Text>
-				</TouchableOpacity>
+			{/* sign in */}
+			<View className="h-screen">
+				<Image source={bg} className="w-screen h-[65%] z-0" />
+				<View className="bg-white h-[45%] rounded-t-[65px] shadow-2xl shadow-slate-800 w-screen z-10 absolute top-[45%]">
+					<Text className="text-2xl text-center mt-5 tracking-wider font-semibold">Generate invoice</Text>
+					<DropDown changeOrderList={changeOrderList} />
+					<DateComponent isCalendarOpen={isStartCalendarOpen} handleOpenCalendar={handleOpenCalendarStart} setDate={getStartDate} />
+					<DateComponent isCalendarOpen={isEndCalendarOpen} handleOpenCalendar={handleOpenCalendarEnd} setDate={getEndDate} />
+					{/* date selections */}
+					<View className="mb-5 flex gap-x-4 flex-row justify-center items-center">
+						<View className="w-[40%] ml-2">
+							<Text className="tracking-wider">Start Date:</Text>
+							<TouchableOpacity className="border p-3 mt-2 border-green" onPress={handleOpenCalendarStart}>
+								<Text>{startDate}</Text>
+							</TouchableOpacity>
+						</View>
+						<View className="w-[40%]">
+							<Text className="tracking-wider">End Date:</Text>
+							<TouchableOpacity className="border p-3 mt-2 border-green" onPress={handleOpenCalendarEnd}>
+								<Text>{endDate}</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
 
-				<Text className="mt-4">End Date:</Text>
-				<TouchableOpacity className="border w-4/5 p-3 mt-2" onPress={handleOpenCalendarEnd}>
-					<Text>{endDate}</Text>
-				</TouchableOpacity>
-			</View>
-
-			<View className="justify-between items-center mb-28">
-				<View className="py-2 px-4 rounded">
-					<Button title="Generate Invoice" onPress={generatePDF} />
-				</View>
-				<View className="w-4" />
-				<View className="py-2 px-4 rounded">
-					<Button title="Generate Report Sheet" onPress={fetchReportSheetDetails} />
+					<View className="w-screen flex flex-row justify-center items-center gap-x-2">
+						<TouchableOpacity className="bg-green w-40 px-2 py-2 rounded-md my-3" onPress={generatePDF}>
+							<Text className="text-center text-white tracking-wider">Generate Invoice</Text>
+						</TouchableOpacity>
+						<TouchableOpacity className="bg-green w-52 px-2 py-2 rounded-md my-3" onPress={fetchReportSheetDetails}>
+							<Text className="text-center text-white tracking-wider">Generate Report Sheet</Text>
+						</TouchableOpacity>
+					</View>
 				</View>
 			</View>
 		</View>
 	) : (
 		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-			<ActivityIndicator size="large" color="#0000ff" />
+			<ActivityIndicator size="large" color="#6dab4a" />
 		</View>
 	);
 };

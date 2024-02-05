@@ -223,7 +223,7 @@ export default function MenuQuotation({ navigation }) {
 			{isEditFoodOpen && <EditerComponent itemEdit={itemEdit} itemEditPass={itemEditPass} setIsEditFoodOpen={setIsEditFoodOpen} />}
 
 			{/* View menu */}
-			<View className="place-items-center ">
+			<View className="flex justify-center items-center">
 				<View className="flex-row mx-3 mb-2 py-2 text-lg bg-white w-11/12 mt-9 border-b border-green">
 					<View>
 						<Text className="text-lg p-2 m-1 w-40 tracking-wider font-bold">Items</Text>

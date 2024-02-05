@@ -1,7 +1,5 @@
 import { View, Text, ScrollView, Button, TextInput, Alert, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-
-import PhoneComponent from '../components/PhoneComponent';
 import Head from '../components/Head';
 import { CheckToken } from '../middleware/CheckToken';
 
@@ -143,7 +141,7 @@ export default function AddClient({ navigation }) {
 	return isLoggedIn ? (
 		<ScrollView automaticallyAdjustKeyboardInsets>
 			<Head />
-			<View className="p-15 mt-14 space-y-4 mx-10">
+			<View className="p-15 mt-1 space-y-4 mx-10">
 				<Text className="text-gray-700 text-lg font-light">Business name : </Text>
 
 				<TextInput
