@@ -65,16 +65,16 @@ export default function ViewClients({ navigation }) {
 	};
 
 	return isLoggedIn ? (
-		<View className="w-screen">
-			<Head />
-			<View className="w-screen flex items-end">
-				<Text className="mt-8 text-lg mr-12">List of Clients</Text>
+		<View className="mt-10 w-screen">
+			{/* <Head /> */}
+			<View className="ml-7 w-screen">
+				<Text className="mt-8 text-2xl tracking-wider">List of Clients</Text>
 			</View>
-			<View className="w-screen flex items-center mt-3">
+			<View className="w-screen flex items-center mt-8">
 				<View className="w-11/12">
 					{loadClients()}
 					<View className="absolute top-full left-10 mt-4">
-						<TouchableOpacity className="bg-blue-500 p-3 rounded-lg" onPress={handleNavigation}>
+						<TouchableOpacity className="bg-green p-3 rounded-lg" onPress={handleNavigation}>
 							<Text className="text-white">Add Client</Text>
 						</TouchableOpacity>
 					</View>

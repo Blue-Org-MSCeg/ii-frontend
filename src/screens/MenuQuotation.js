@@ -189,8 +189,8 @@ export default function MenuQuotation({ navigation }) {
 
 	return isLoggedIn ? (
 		<View className="w-full">
-			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
-				<Text className="text-center">MenuQuotation</Text>
+			<View className="mt-10 mb-8 p-5">
+				<Text className="">MenuQuotation</Text>
 			</View>
 
 			{/* list clients */}
