@@ -1,5 +1,4 @@
-import { View, Button, Text, TouchableOpacity, Alert } from 'react-native';
-
+import { View, Button, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import DropDown from '../components/DropDown';
 import { shareAsync } from 'expo-sharing';
 import { printToFileAsync } from 'expo-print';
@@ -7,6 +6,7 @@ import { useEffect, useState } from 'react';
 import DateComponent from '../components/DateComponent';
 import XLSX from 'xlsx';
 import * as FileSystem from 'expo-file-system';
+import { CheckToken } from '../middleware/CheckToken';
 
 const data = {
 	bankname: 'UNION BANK OF INDIA',
@@ -16,7 +16,31 @@ const data = {
 	hssonno: 'HSSON NO :996337',
 };
 
-const IRgeneration = () => {
+const IRgeneration = ({ navigation }) => {
+	// check if user is logged in
+	const [isLoggedIn, setIsLoggedIn] = useState('first');
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			console.log('refreshed');
+			checkInitialToken();
+		});
+		return unsubscribe;
+	}, [navigation]);
+
+	const checkInitialToken = async () => {
+		const hasToken = await CheckToken();
+		console.log(hasToken);
+		setIsLoggedIn(hasToken);
+	};
+
+	useEffect(() => {
+		if (!isLoggedIn && isLoggedIn !== 'first') {
+			navigation.navigate('SignIn');
+		}
+	}, [isLoggedIn]);
+	//user verification ends here
+
 	const [client, setClient] = useState({ address: '', items: [] });
 	const [invoice, setInvoice] = useState([]);
 	let monthOfInvoice;
@@ -353,7 +377,7 @@ const IRgeneration = () => {
 			});
 	};
 
-	return (
+	return isLoggedIn ? (
 		<View className="flex-1">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
 				<Text className="text-center">Invoice Generation</Text>
@@ -383,6 +407,10 @@ const IRgeneration = () => {
 					<Button title="Generate Report Sheet" onPress={fetchReportSheetDetails} />
 				</View>
 			</View>
+		</View>
+	) : (
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<ActivityIndicator size="large" color="#0000ff" />
 		</View>
 	);
 };

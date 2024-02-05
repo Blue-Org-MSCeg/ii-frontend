@@ -18,8 +18,6 @@ export default function Navigation() {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
-				<Stack.Screen name="Register" component={Register} />
-				<Stack.Screen name="SignIn" component={SignIn} />
 				<Stack.Screen name="Home" component={HomeScreen} />
 				<Stack.Screen name="ViewClients" component={ViewClients} />
 				<Stack.Screen name="AddOrders" component={AddOrders} />
@@ -28,6 +26,8 @@ export default function Navigation() {
 				<Stack.Screen name="MenuQuotation" component={MenuQuotation} />
 				<Stack.Screen name="IRgeneration" component={IRgeneration} />
 				<Stack.Screen name="EditOrder" component={EditOrder} />
+				<Stack.Screen name="SignIn" component={SignIn} />
+				<Stack.Screen name="Register" component={Register} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

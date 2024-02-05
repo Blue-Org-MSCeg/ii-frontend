@@ -1,10 +1,35 @@
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import DropDown from '../components/DropDown';
 import DateComponent from '../components/DateComponent';
 import EditRemove from '../components/EditRemove';
+import { CheckToken } from '../middleware/CheckToken';
 
-export default function EditOrder() {
+export default function EditOrder({ navigation }) {
+	// check if user is logged in
+	const [isLoggedIn, setIsLoggedIn] = useState('first');
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			console.log('refreshed');
+			checkInitialToken();
+		});
+		return unsubscribe;
+	}, [navigation]);
+
+	const checkInitialToken = async () => {
+		const hasToken = await CheckToken();
+		console.log(hasToken);
+		setIsLoggedIn(hasToken);
+	};
+
+	useEffect(() => {
+		if (!isLoggedIn && isLoggedIn !== 'first') {
+			navigation.navigate('SignIn');
+		}
+	}, [isLoggedIn]);
+	//user verification ends here
+
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 	let [date, setDate] = useState('');
 	const [client, setClient] = useState({});
@@ -110,7 +135,7 @@ export default function EditOrder() {
 			</ScrollView>
 		);
 	};
-	return (
+	return isLoggedIn ? (
 		<View className="flex-1 bg-white-500">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
 				<Text className="text-center">Edit Orders</Text>
@@ -133,6 +158,10 @@ export default function EditOrder() {
 					{loadOrder()}
 				</View>
 			</View>
+		</View>
+	) : (
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<ActivityIndicator size="large" color="#0000ff" />
 		</View>
 	);
 }

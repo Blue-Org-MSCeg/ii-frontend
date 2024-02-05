@@ -3,8 +3,32 @@ import React, { useEffect, useState } from 'react';
 import EditFoodComponent from '../components/EditFoodComponent';
 import EditerComponent from '../components/EditerComponent';
 import DropDown from '../components/DropDown';
+import { CheckToken } from '../middleware/CheckToken';
 
-export default function MenuQuotation() {
+export default function MenuQuotation({ navigation }) {
+	// check if user is logged in
+	const [isLoggedIn, setIsLoggedIn] = useState('first');
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			console.log('refreshed');
+			checkInitialToken();
+		});
+		return unsubscribe;
+	}, [navigation]);
+
+	const checkInitialToken = async () => {
+		const hasToken = await CheckToken();
+		console.log(hasToken);
+		setIsLoggedIn(hasToken);
+	};
+
+	useEffect(() => {
+		if (!isLoggedIn && isLoggedIn !== 'first') {
+			navigation.navigate('SignIn');
+		}
+	}, [isLoggedIn]); //user verification ends here
+
 	const [cost, setCost] = useState('');
 	const [food, setFood] = useState('');
 	const [client, setClient] = useState({});
@@ -163,7 +187,7 @@ export default function MenuQuotation() {
 		);
 	};
 
-	return (
+	return isLoggedIn ? (
 		<View className="w-full">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
 				<Text className="text-center">MenuQuotation</Text>
@@ -221,6 +245,10 @@ export default function MenuQuotation() {
 					<Button title="ADD" onPress={toggleAddFoodHandler} />
 				</View>
 			</TouchableOpacity>
+		</View>
+	) : (
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<ActivityIndicator size="large" color="#0000ff" />
 		</View>
 	);
 }

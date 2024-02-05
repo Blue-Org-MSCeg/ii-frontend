@@ -1,11 +1,36 @@
-import { ScrollView, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View, Alert, ActivityIndicator } from 'react-native';
 import Head from './../components/Head';
 import { useEffect, useState } from 'react';
 import DateComponent from '../components/DateComponent';
 import MenuComponent from './../components/MenuComponent';
 import DropDown from '../components/DropDown';
+import { CheckToken } from '../middleware/CheckToken';
 
 export default AddOrders = ({ navigation }) => {
+	// check if user is logged in
+	const [isLoggedIn, setIsLoggedIn] = useState('first');
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			console.log('refreshed');
+			checkInitialToken();
+		});
+		return unsubscribe;
+	}, [navigation]);
+
+	const checkInitialToken = async () => {
+		const hasToken = await CheckToken();
+		console.log(hasToken);
+		setIsLoggedIn(hasToken);
+	};
+
+	useEffect(() => {
+		if (!isLoggedIn && isLoggedIn !== 'first') {
+			navigation.navigate('SignIn');
+		}
+	}, [isLoggedIn]);
+	//user verification ends here
+
 	// setting the form data
 	const [formData, setFormData] = useState({ orders: [] });
 
@@ -98,7 +123,7 @@ export default AddOrders = ({ navigation }) => {
 		}
 	}, [formData]);
 
-	return (
+	return isLoggedIn ? (
 		<View>
 			<Head />
 			<Text className="text-lg text-center">Add Orders</Text>
@@ -127,6 +152,10 @@ export default AddOrders = ({ navigation }) => {
 					</TouchableOpacity>
 				</View>
 			</View>
+		</View>
+	) : (
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<ActivityIndicator size="large" color="#0000ff" />
 		</View>
 	);
 };

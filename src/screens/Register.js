@@ -1,6 +1,7 @@
 import { Alert, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import KeyboardAvoidWrapper from '../components/KeyboardAvoidingWrapper';
 import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const signUpBgNew = require('./../../assets/signupNew.png');
 
 export default function Register({ navigation }) {
@@ -20,13 +21,14 @@ export default function Register({ navigation }) {
 			body: JSON.stringify(formData),
 		})
 			.then((response) => response.json())
-			.then((data) => {
+			.then(async (data) => {
 				setFormData({
 					name: '',
 					email: '',
 					password: '',
 					passwordConfirm: '',
 				});
+				await AsyncStorage.setItem('token', data.token);
 				navigation.navigate('SignIn');
 			})
 			.catch((err) => {

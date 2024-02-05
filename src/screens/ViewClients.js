@@ -2,8 +2,32 @@ import { Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Head from '../components/Head';
 import ClientComponent from '../components/ClientComponent';
 import { useEffect, useState } from 'react';
+import { CheckToken } from '../middleware/CheckToken';
 
 export default function ViewClients({ navigation }) {
+	// check if user is logged in
+	const [isLoggedIn, setIsLoggedIn] = useState('first');
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			console.log('refreshed');
+			checkInitialToken();
+		});
+		return unsubscribe;
+	}, [navigation]);
+
+	const checkInitialToken = async () => {
+		const hasToken = await CheckToken();
+		console.log(hasToken);
+		setIsLoggedIn(hasToken);
+	};
+
+	useEffect(() => {
+		if (!isLoggedIn && isLoggedIn !== 'first') {
+			navigation.navigate('SignIn');
+		}
+	}, [isLoggedIn]); //user verification ends here
+
 	const [clients, setClients] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -40,7 +64,7 @@ export default function ViewClients({ navigation }) {
 		);
 	};
 
-	return (
+	return isLoggedIn ? (
 		<View className="w-screen">
 			<Head />
 			<View className="w-screen flex items-end">
@@ -56,6 +80,10 @@ export default function ViewClients({ navigation }) {
 					</View>
 				</View>
 			</View>
+		</View>
+	) : (
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<ActivityIndicator size="large" color="#0000ff" />
 		</View>
 	);
 }
