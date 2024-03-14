@@ -382,7 +382,7 @@ const IRgeneration = ({ navigation }) => {
 		<View className="flex-1">
 			{/* sign in */}
 			<View className="h-screen">
-				<Image source={bg} className="w-screen h-[65%] z-0" />
+				<Image source={bg} className="w-screen h-[65%] z-0 rounded-b-3xl" />
 				<View className="bg-white h-[45%] rounded-t-[65px] shadow-2xl shadow-slate-800 w-screen z-10 absolute top-[45%]">
 					<Text className="text-2xl text-center mt-5 tracking-wider font-semibold">Generate invoice</Text>
 					<DropDown changeOrderList={changeOrderList} />

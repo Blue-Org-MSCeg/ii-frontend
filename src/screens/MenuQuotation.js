@@ -171,7 +171,7 @@ export default function MenuQuotation({ navigation }) {
 
 	const loadMenuQuotation = () => {
 		if (!client._id) {
-			return <Text className="text-base mt-4 ml-4 border border-red-500 bg-white w-11/12 p-2">🧧Please select a client</Text>;
+			return <Text className="text-base mt-4 ml-2 border rounded-md border-[#65B741] bg-white w-11/12 p-2">🧧Please select a client</Text>;
 		}
 
 		if (isLoading) {

@@ -35,7 +35,7 @@ const DropDown = (props) => {
 	}, [clients]);
 
 	return (
-		<View className="flex-1 p-10 mb-10">
+		<View className="flex-1 p-10 mb-10 w-full">
 			<DropDownPicker
 				items={clientList}
 				open={isOpen}
