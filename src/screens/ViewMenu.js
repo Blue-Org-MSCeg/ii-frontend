@@ -10,7 +10,6 @@ export default function ViewMenu({ navigation }) {
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			console.log('refreshed');
 			checkInitialToken();
 		});
 		return unsubscribe;
@@ -18,7 +17,6 @@ export default function ViewMenu({ navigation }) {
 
 	const checkInitialToken = async () => {
 		const hasToken = await CheckToken();
-		console.log(hasToken);
 		setIsLoggedIn(hasToken);
 	};
 
@@ -31,11 +29,11 @@ export default function ViewMenu({ navigation }) {
 	const [menuItem, setMenuItem] = useState([]);
 	const [cost, setCost] = useState('');
 	const [food, setFood] = useState('');
-	const [formData, setFormData] = useState({});
+	const [formData, setFormData] = useState(null);
 	const [editFormData, setEditFormData] = useState({});
 	const [itemEdit, setItemEdit] = useState({});
 	const [editedItem, setEditedItem] = useState({});
-	const [isAddFoodOpen, setIsAddFoodOpen] = useState(true);
+	const [isAddFoodOpen, setIsAddFoodOpen] = useState(false);
 	const [isEditFoodOpen, setIsEditFoodOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -47,21 +45,19 @@ export default function ViewMenu({ navigation }) {
 				setMenuItem(res.data.menu);
 				setIsLoading(false);
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => Alert.alert('Failure', err.message, [{ text: 'OK' }]));
 	}, [formData]);
 
 	const editorPass = (item) => {
-		console.log('editor:', item);
 		setItemEdit(item);
 	};
 
 	const itemEditPass = (itemEdit) => {
-		console.log('item edit pass', itemEdit);
 		setEditedItem(itemEdit);
 	};
 
-	const changeFood = (food) => {
-		setFood(food);
+	const changeFood = (foodName) => {
+		setFood(foodName);
 	};
 
 	const changeCost = (cost) => {
@@ -86,18 +82,23 @@ export default function ViewMenu({ navigation }) {
 
 	// posting the food to the db when submit button is pressed
 	useEffect(() => {
-		fetch(`${process.env.EXPO_PUBLIC_API_URL}/menus/`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(formData),
-		})
-			.then((response) => response.json())
-			.then((data) => setMenuItem((current) => [...current, data.data.food]))
-			.catch((err) => console.log(err));
+		console.log('form data', formData);
+		if (formData) {
+			fetch(`${process.env.EXPO_PUBLIC_API_URL}/menus/`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(formData),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					setMenuItem((current) => [...current, data.data.food]);
+				})
+				.catch((err) => Alert.alert('Failure', err.message, [{ text: 'OK' }]));
 
-		toggleAddFoodHandler();
+			toggleAddFoodHandler();
+		}
 	}, [formData]);
 
 	useEffect(() => {
@@ -118,7 +119,6 @@ export default function ViewMenu({ navigation }) {
 
 	// edit menu cost
 	useEffect(() => {
-		console.log('changed edit form data');
 		setEditFormData({
 			_id: itemEdit._id,
 			foodItem: itemEdit.foodItem,
@@ -129,7 +129,6 @@ export default function ViewMenu({ navigation }) {
 	useEffect(() => {
 		console.log(Object.keys(editFormData));
 		if (Object.keys(editFormData).length !== 0) {
-			console.log('formData changed');
 			fetch(`${process.env.EXPO_PUBLIC_API_URL}/menus/${editFormData._id}`, {
 				method: 'PATCH',
 				headers: {
@@ -158,7 +157,6 @@ export default function ViewMenu({ navigation }) {
 
 	// remove food from menu
 	const deleteMenuItem = (item) => {
-		console.log('delete:', item);
 		fetch(`${process.env.EXPO_PUBLIC_API_URL}/menus/${item._id}`, {
 			method: 'DELETE',
 			headers: {
@@ -167,7 +165,7 @@ export default function ViewMenu({ navigation }) {
 		})
 			.then((response) => response.json())
 			.then((data) => Alert.alert('Success', 'Food item deleted successfully', [{ text: 'OK' }]))
-			.catch((err) => console.error(err));
+			.catch((err) => Alert.alert('Failure', err.message, [{ text: 'OK' }]));
 
 		const updatedMenu = menuItem.filter((menu) => menu._id !== item._id);
 		setMenuItem(updatedMenu);
@@ -194,7 +192,7 @@ export default function ViewMenu({ navigation }) {
 	return isLoggedIn ? (
 		<View className="w-full">
 			<View className="mt-10 mb-8 p-5 border-solid content-center border-1 justify-center bg-blue-400 ">
-				<Text className="text-center">View Menu</Text>
+				<Text className="mt-8 text-2xl tracking-wider">View Menu</Text>
 			</View>
 
 			{/* add food items for company */}
@@ -227,16 +225,13 @@ export default function ViewMenu({ navigation }) {
 			<View className="place-items-center mx-2 ">
 				<View className="flex-row bg-gray-300  mx-3 mb-2">
 					<View>
-						<Text className=" p-2 m-1 w-40  font-bold">Items</Text>
+						<Text className=" p-2 m-1 w-40 text-lg font-bold">Items</Text>
 					</View>
 					<View>
-						<Text className="p-2 m-1 w-20 left-5 font-bold">Cost</Text>
+						<Text className="p-2 m-1 w-20 left-5 text-lg font-bold">Cost</Text>
 					</View>
 				</View>
-				{/* {menuItem.map((item) => (
-			<EditFoodComponent key={item._id} item={item} setIsEditFoodOpen={setIsEditFoodOpen} setMenuItem={menuItem} editorPass={editorPass} deleteItem={deleteMenuItem} />
-		))} */}
-				{loadMenu()}
+				{menuItem && loadMenu()}
 			</View>
 			<TouchableOpacity>
 				<View className="w-20 justify-between p-1 rounded-md mt-10 ml-5">
