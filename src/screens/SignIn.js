@@ -29,6 +29,7 @@ export default function SignIn({ navigation }) {
 				navigation.navigate('Home');
 			})
 			.catch((err) => {
+				console.log(err);
 				Alert.alert('Error', 'Unable to login', [{ text: 'ok' }]);
 			});
 	};

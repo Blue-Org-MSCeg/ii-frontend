@@ -26,7 +26,7 @@ export default function ClientComponent(props) {
 	};
 
 	return (
-		<View style={styles.container} key={props.client._id} className="w-4/5 flex flex-row justify-between items-center bg-white py-5 px-6 mb-2 rounded-lg shadow-lg ">
+		<View styles={styles.container} key={props.client._id} className="w-4/5 flex flex-row justify-between items-center bg-white py-5 px-6 mb-2 rounded-lg shadow-lg ">
 			<Text className="text-base">{props.client.businessName}</Text>
 			<TouchableOpacity className="px-3 py-1 rounded-full" onPress={() => deleteClient(props.client._id)}>
 				<FontAwesome name="minus" color="red" size={15} />

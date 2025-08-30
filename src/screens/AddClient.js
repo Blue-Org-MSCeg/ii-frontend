@@ -184,7 +184,7 @@ export default function AddClient({ navigation }) {
 			</View>
 		</ScrollView>
 	) : (
-		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+		<View styles={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 			<ActivityIndicator size="large" color="#6dab4a" />
 		</View>
 	);

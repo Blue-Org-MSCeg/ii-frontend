@@ -46,7 +46,7 @@ export default function HomeScreen({ navigation }) {
 			</View>
 		</ScrollView>
 	) : (
-		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+		<View styles={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 			<ActivityIndicator size="large" color="#0000ff" />
 		</View>
 	);
